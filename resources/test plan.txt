@@ -1,0 +1,13 @@
+Test Plan
+
+Project Title: Student Résumé Repository
+Client: School of Information Science
+Project Contact: Jose Marte [ jem202@pitt.edu ] 
+
+Test Plan Outline	
+	1. Registration Tests			
+	2. Login Tests					
+	3. Résumé Building Tests
+	4. System Performance Tests
+	5. System Reliability Tests
+	6. Aesthetic & Formatting Tests
