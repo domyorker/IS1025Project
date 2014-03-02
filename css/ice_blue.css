@@ -60,8 +60,8 @@ img {
     background-color: #f0f0f0;
     width: 790px;
     min-height: 800px;
-    float: right;
-    padding: 5px;
+    float: left;
+    padding: 0 5px;
 }
 
 
