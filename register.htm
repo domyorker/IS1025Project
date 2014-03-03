@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title> SRR: [page title here] </title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <meta http-equiv="Content-Style-Type" content="text/css;">
+    <meta name="Author" content="Jose Marte">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+    <script src="js/jquery-1.11.0.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="css/ice_blue.css" type="text/css" media="screen,projection,print">	<!--// Document Style //-->
+    <script>
+        $(function () {
+            $("#accordion").accordion();
+        });
+    </script>
+</head>
+
+
+<body>
+    <div id="wrapper">
+        <div id="masthead">
+            <div id="logoDIV"><img src="img/logos/srr-banner.jpg" alt="School of Information Science Logo" /></div>
+            <div id="loginStatus"><a href="login.htm">Login</a> | <a href="register.htm">Register</a></div>
+        </div>
+        <div class="clear"></div><!--important-->
+        <div id="nav">
+            <ul>
+                <li>
+                    <a href="index.htm">
+                        Home
+                    </a>
+                </li>
+                <li>
+                    <a href="search.htm">
+                        Search Resumes
+                    </a>
+                </li>
+                <li>
+                    <a href="browse.htm">
+                        Browse Gallery
+                    </a>
+                </li>
+                <li>
+                    <a href="register.htm">
+                        Register
+                    </a>
+                </li>
+                <li>
+                    <a href="login.htm">
+                        Login
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+        <div id="main">
+            <h1>
+                Registration
+            </h1>
+            <div id="accordion">
+                <h3>Student Registration</h3>
+                <div>
+                    <form id="frmRegister" name="frmRegister" action="login" method="post">
+                        <table>
+                            <tr><th colspan="2">Create a Student account by registering below</th></tr>
+                            <tr><td>Username:</td><td><input type="text" name="txtUserName" id="txtUserName" placeholder="[ username ]" /></td></tr>
+                            <tr><td>Password:</td><td><input type="password" name="txtPassword" id="txtPassword" placeholder="[ password ]" /></td></tr>
+                            <tr><td>First Name:</td><td><input type="text" name="txtUserName" id="txtUserName" placeholder="[ First Name ]" /></td></tr>
+                            <tr><td>Last Name:</td><td><input type="password" name="txtPassword" id="txtPassword" placeholder="[ Last Name ]" /></td></tr>
+                            <tr><td>Address:</td><td><input type="text" name="txtPassword" id="txtPassword" placeholder="[ Address Line 1 ]" /></td></tr>
+                            <tr><td></td><td><input type="text" name="txtUserName" id="txtUserName" placeholder="[ Address Line 2 ]" /></td></tr>
+                            <tr>
+                                <td>State/Province:</td>
+                                <td>
+                                    <select name="ddlState">
+                                        <option value="" selected="selected">Select a State or Province</option>
+                                        <option value="ID">Option 1</option>
+                                        <option value="ID">Option 2</option>
+                                        <option value="ID">Option 3</option>
+                                        <option value="ID">Option 4</option>
+                                        <option value="ID">Option 5</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr><td>City:</td><td><input type="text" name="txtCity" id="txtCity" placeholder="[ City ]" /></td></tr>
+                            <tr><td>ZIP/Postal Code:</td><td><input type="text" name="txtZIP" id="txtZIP" placeholder="[ ZIP/Postal Code ]" /></td></tr>
+                            <tr><td>Email Address:</td><td><input type="email" name="txtEmail" id="txtEmail" placeholder="[ username@domain.com ]" /></td></tr>
+                            <tr><td>Telephone Number:</td><td><input type="tel" name="txtPassword" id="txtPassword" placeholder="[ Telephone Number ]" /></td></tr>
+                            <tr><td></td><td><input type="submit" id="bntSubmitStudent" name="bntSubmitStudent" value="Register" /></td></tr>
+                        </table>
+                    </form>
+                </div><!--End student registration-->
+                <h3>Employer Registration</h3>
+                <div>
+                    <form id="frmRegister" name="frmRegister" action="login" method="post">
+                        <table>
+                            <tr><th colspan="2">Create an Employer account by registering below</th></tr>
+                            <tr><td>Username:</td><td><input type="text" name="txtUserName" id="txtUserName" placeholder="[ username ]" /></td></tr>
+                            <tr><td>Password:</td><td><input type="password" name="txtPassword" id="txtPassword" placeholder="[ password ]" /></td></tr>
+                            <tr><td>First Name:</td><td><input type="text" name="txtUserName" id="txtUserName" placeholder="[ First Name ]" /></td></tr>
+                            <tr><td>Last Name:</td><td><input type="password" name="txtPassword" id="txtPassword" placeholder="[ Last Name ]" /></td></tr>
+                            <tr><td>Address:</td><td><input type="text" name="txtPassword" id="txtPassword" placeholder="[ Address Line 1 ]" /></td></tr>
+                            <tr><td></td><td><input type="text" name="txtUserName" id="txtUserName" placeholder="[ Address Line 2 ]" /></td></tr>
+                            <tr>
+                                <td>State/Province:</td>
+                                <td>
+                                    <select name="ddlState">
+                                        <option value="" selected="selected">Select a State or Province</option>
+                                        <option value="ID">Option 1</option>
+                                        <option value="ID">Option 2</option>
+                                        <option value="ID">Option 3</option>
+                                        <option value="ID">Option 4</option>
+                                        <option value="ID">Option 5</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr><td>City:</td><td><input type="text" name="txtCity" id="txtCity" placeholder="[ City ]" /></td></tr>
+                            <tr><td>ZIP/Postal Code:</td><td><input type="text" name="txtZIP" id="txtZIP" placeholder="[ ZIP/Postal Code ]" /></td></tr>
+                            <tr><td>Email Address:</td><td><input type="email" name="txtEmail" id="txtEmail" placeholder="[ username@domain.com ]" /></td></tr>
+                            <tr><td>Telephone Number:</td><td><input type="tel" name="txtPassword" id="txtPassword" placeholder="[ Telephone Number ]" /></td></tr>
+                            <tr><td></td><td><input type="submit" id="bntSubmitStudent" name="bntSubmitStudent" value="Register" /></td></tr>
+                        </table>
+                    </form>
+                </div><!--End Employer registration-->
+                <h3>Faculty Registration</h3>
+                <div>
+                    <form id="frmRegister" name="frmRegister" action="login" method="post">
+                        <table>
+                            <tr><th colspan="2">Create a Faculty account by registering below</th></tr>
+                            <tr><td>Username:</td><td><input type="text" name="txtUserName" id="txtUserName" placeholder="[ username ]" /></td></tr>
+                            <tr><td>Password:</td><td><input type="password" name="txtPassword" id="txtPassword" placeholder="[ password ]" /></td></tr>
+                            <tr><td>First Name:</td><td><input type="text" name="txtUserName" id="txtUserName" placeholder="[ First Name ]" /></td></tr>
+                            <tr><td>Last Name:</td><td><input type="password" name="txtPassword" id="txtPassword" placeholder="[ Last Name ]" /></td></tr>
+                            <tr><td>Address:</td><td><input type="text" name="txtPassword" id="txtPassword" placeholder="[ Address Line 1 ]" /></td></tr>
+                            <tr><td></td><td><input type="text" name="txtUserName" id="txtUserName" placeholder="[ Address Line 2 ]" /></td></tr>
+                            <tr>
+                                <td>State/Province:</td>
+                                <td>
+                                    <select name="ddlState">
+                                        <option value="" selected="selected">Select a State or Province</option>
+                                        <option value="ID">Option 1</option>
+                                        <option value="ID">Option 2</option>
+                                        <option value="ID">Option 3</option>
+                                        <option value="ID">Option 4</option>
+                                        <option value="ID">Option 5</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr><td>City:</td><td><input type="text" name="txtCity" id="txtCity" placeholder="[ City ]" /></td></tr>
+                            <tr><td>ZIP/Postal Code:</td><td><input type="text" name="txtZIP" id="txtZIP" placeholder="[ ZIP/Postal Code ]" /></td></tr>
+                            <tr><td>Email Address:</td><td><input type="email" name="txtEmail" id="txtEmail" placeholder="[ username@domain.com ]" /></td></tr>
+                            <tr><td>Telephone Number:</td><td><input type="tel" name="txtPassword" id="txtPassword" placeholder="[ Telephone Number ]" /></td></tr>
+                            <tr><td></td><td><input type="submit" id="bntSubmitStudent" name="bntSubmitStudent" value="Register" /></td></tr>
+                        </table>
+                    </form>
+                </div><!--End Faculty registration-->
+            </div><!--End registration accordion-->
+            <div class="clear"></div><!--important-->
+        </div>
+        <div class="clear"></div>
+        <div id="footer">
+            <ul>
+                <li>
+                    <a href="">
+                        This Project is in Beta Stage
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        This Project is based on a request for proprosal by the School of Information Science at University of Pittsburgh
+                    </a>
+                </li>
+                <li>
+                    <a href="http://www.ischool.pitt.edu/people/babichenko.php" rel="Project Supervisor"> Project Supervisor: Dmitriy Babichenko</a>
+                </li>
+                <li>
+                    <a href="aboutus.htm#authors">
+                        Project Authors: Jose Marte, Steven Schilinski and Sean Carney
+                    </a>
+
+                </li>
+            </ul>
+        </div> <!--End footer-->
+    </div> <!--End wrapper-->
+</body>
+</html>

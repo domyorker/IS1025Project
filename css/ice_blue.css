@@ -19,12 +19,56 @@ body {
     text-align: left;
 }
 
+h1, h2, h3, h4, h5, h6 {
+    color: #000000;
+    margin: 4px;
+    font-family: 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
+}
 
+h1 {
+    font-size: 22pt;
+}
 
+h2 {
+    font-size: 18pt;
+}
 
-p {
+h3 {
+    font-size: 14pt;
+}
+
+h4 {
+    font-size: 12pt;
+}
+
+h5 {
+    color: #336699;
+    font: bold 10pt;
+}
+
+h6 {
+    color: #336699;
+    font-size: 8pt;
+}
+
+.heading6 a {
+    background-color: transparent;
+    border: 0px;
+    padding: 0px;
+}
+
+p { /* All Paragraphs */
+    font-family: 'Times New Roman', Arial;
+    font-size: 1em;
+    line-height: 2.2em;
+    margin-bottom: 1em;
     padding: 4px;
 }
+
+    p::first-letter {
+        font-size: 2em;
+        font-weight: bold;
+    }
 
 hr {
     border-top: 2px groove #bebbbb;
@@ -34,7 +78,7 @@ hr {
 img {
     border: none;
 }
-
+/*Layout Divs*/
 #wrapper {
     background-color: #677098;
     color: #000000;
@@ -51,26 +95,27 @@ img {
     width: 100%;
 }
 
-    #masthead #logo {
+    #masthead #logoDIV {
+        float: left;
+    }
+
+    #masthead #loginStatus {
         float: right;
-        margin: 2px 20px;
     }
 
 #main {
-    background-color: #f0f0f0;
-    width: 790px;
+    background-color: #FFF;
+    width: 770px;
     min-height: 800px;
     float: left;
-    padding: 0 5px;
+    padding: 25px 10px 0 20px;
 }
-
-
 
 #nav {
     background: #ADC2D6;
     float: left;
-    margin: 0px;
-    width: 160px;
+    padding: 15px 0 0 14px;
+    width: 146px;
     min-height: 800px;
 }
 
@@ -88,7 +133,7 @@ img {
         }
 
             #nav ul li a:hover {
-                background: #f0f0f0;
+                background: #FFF;
             }
 
 #footer {
@@ -99,7 +144,53 @@ img {
     color: #bebbbb;
     font-size: 12px;
 }
+/*END Layout Divs*/
+/**Forms*/
+#frmLogin, #frmRegister {
+    padding: 10px;
+    font-size: 16px;
+}
 
+    #frmLogin table td:first-child, #frmRegister table td:first-child {
+        padding: 4px;
+        text-align: right;
+    }
+
+    #frmLogin table,  #frmRegister table {
+        background-color: #BBBEBC;
+    }
+
+        #frmLogin table td, th, #frmRegister table td, th {
+            padding: 6px 8px;
+            vertical-align: bottom;
+        }
+
+
+input[type="text"], input[type="password"], input[type="email"], input[type="tel"], select {
+    font-size: 14px;
+    width: 300px;
+    height: 20px;
+    background-color: #C3DAC9;
+    color: #000;
+}
+
+input[type="submit"] {
+    float: right;
+    width: 150px;
+    padding: 6px;
+    font-size: 1em;
+    font-weight: bold;
+    background-color: #0D38FF;
+    color: #000;
+    border: 2px outset #000;
+}
+
+    input[type="submit"]:hover {
+        border: 2px inset #000;
+        color: #FFF;
+    }
+/** END Forms*/
+/*MISC. SELECTORS*/
 #employer-note, #student-note, #faculty-note {
     background: no-repeat top center #FFF;
     display: block;
@@ -120,7 +211,8 @@ img {
 #student-note {
     background-image: url(../img/logos/student-note.jpg);
 }
-
+/*END MISC. SELECTORS*/
+/*LINK STYLING*/
 a:link {
     color: #004040;
     font-weight: bold;
@@ -139,22 +231,12 @@ a:hover {
 a:active { /* Active Links */
     color: #336699;
 }
+/*END LINK STYLING*/
 
 
-
-p { /* All Paragraphs */
-    font-family: 'Times New Roman', Arial;
-    font-size: 1em;
-    line-height: 2.2em;
-    margin-bottom: 1em;
-}
-
-    p::first-letter {
-        font-size: 2em;
-        font-weight: bold;
-    }
-/*Miscellaneous Classes*/
+/*Miscellaneous Classes */
 .page-title {
+    text-align: center;
     margin: 8px;
     padding: 4px;
     font-size: 3em;
@@ -190,15 +272,13 @@ p { /* All Paragraphs */
     clear: both;
 }
 
-.address, address {
+.record, #record {
     color: #000000;
     font: 10pt 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
 }
 
-    .address a {
-        background-color: transparent;
-        border: 0px;
-        padding: 0px;
+    .record a, #record a {
+        background-color: yellow;
     }
 
 .citation, cite {
@@ -227,198 +307,27 @@ p { /* All Paragraphs */
     text-align: center;
 }
 
-.footer_box {
-    color: #f0f0f0;
-    background-color: #f0f0f0;
-}
 
 .form_button {
     color: #000000;
-    font: 10pt 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
+    font: 14pt 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
 }
 
 .form_input {
     color: #000000;
-    font: 10pt 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
+    font: 14pt 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
 }
 
 .form_label {
     color: #000000;
-    font: 10pt 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
+    font: 14pt 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
 }
 
 .form_legend {
     color: #336699;
-    font: bold 10pt 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
+    font: bold 14pt 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
 }
 
-.form_set {
-    color: #000000;
-    font: 9pt 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
-    background-color: #ffffff;
-    border: 0.75pt solid #000000;
-}
-
-.header {
-    color: #ffffff;
-    font: 20pt 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
-}
-
-.header_box {
-    color: #336699;
-    background-color: #336699;
-}
-
-.heading1, h1 {
-    color: #000000;
-    font: 22pt 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
-}
-
-.heading2, h2 {
-    color: #000000;
-    font: 18pt 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
-}
-
-.heading3, h3 {
-    color: #595959;
-    font: 14pt 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
-}
-
-.heading4, h4 {
-    color: #000000;
-    font: 12pt 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
-}
-
-.heading5, h5 {
-    color: #336699;
-    font: bold 10pt 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
-}
-
-.heading6, h6 {
-    color: #336699;
-    font: 8pt 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
-}
-
-    .heading6 a {
-        background-color: transparent;
-        border: 0px;
-        padding: 0px;
-    }
-
-.info {
-    color: #000000;
-    font: 10pt 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
-}
-
-    .info a {
-        background-color: transparent;
-        border: 0px;
-        padding: 0px;
-    }
-
-.info_box {
-    color: #ffffff;
-    background-color: #ffffff;
-}
-
-.info_tag {
-    color: #336699;
-    font: bold 10pt 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
-}
-
-    .info_tag a {
-        background-color: transparent;
-        border: 0px;
-        padding: 0px;
-    }
-
-.item {
-    color: #000000;
-    font: 10pt 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
-}
-
-    .item a {
-        background-color: transparent;
-        border: 0px;
-        padding: 0px;
-    }
-
-.item_box {
-    color: #ececec;
-    background-color: #ececec;
-}
-
-.item_tag {
-    color: #336699;
-    font: bold 10pt 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
-}
-
-    .item_tag a {
-        background-color: transparent;
-        border: 0px;
-        padding: 0px;
-    }
-
-.logo {
-    color: #000000;
-    font: 10pt 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
-}
-
-.logo_box {
-    color: #ebebeb;
-    background-color: #ebebeb;
-}
-
-.logo_tag {
-    color: #000000;
-    font: bold 10pt 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
-}
-
-.navigation {
-    color: #666681;
-    font: bold 10pt 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
-}
-
-    .navigation a {
-        background-color: transparent;
-        border: 0px;
-        padding: 0px;
-    }
-
-.navigation_box {
-    color: #cccccc;
-    background-color: #cccccc;
-}
-
-.navigation_tag {
-    color: #000000;
-    font: 12pt 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
-}
-
-.news {
-    color: #000000;
-    font: 8pt 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
-}
-
-.news_box {
-    color: #d8d8d8;
-    background-color: #d8d8d8;
-}
-
-.news_tag {
-    color: #336699;
-    font: bold 8pt 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
-}
-
-.panel {
-    color: #000000;
-    font: 10pt 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
-}
-
-.panel_box {
-    color: #d2d2d2;
-    background-color: #d2d2d2;
-}
 
 .photo {
     color: #000000;
@@ -439,6 +348,4 @@ p { /* All Paragraphs */
     color: #000000;
     font: 8pt 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
 }
-
-
-/*--- EndOfFile ---*/
+/*END Miscellaneous Classes */
