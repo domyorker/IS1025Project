@@ -26,38 +26,43 @@
         <div class="clear"></div><!--important-->
         <div id="nav">
             <ul>
-                <li>
+                <li id="navHomeLink">
                     <a href="index.htm">
                         Home
                     </a>
                 </li>
-                <li>
+                <li id="navAuthorLink">
+                    <a href="author.htm">
+                        Create Resume
+                    </a>
+                </li>
+                <li id="navSearchLink">
                     <a href="search.htm">
                         Search Resumes
                     </a>
                 </li>
-                <li>
+                <li id="navBrowseLink">
                     <a href="browse.htm">
                         Browse Gallery
                     </a>
                 </li>
-                <li>
+                <li id="navRegisterLink">
                     <a href="register.htm">
                         Register
                     </a>
                 </li>
-                <li>
+                <li id="navLoginLink">
                     <a href="login.htm">
                         Login
                     </a>
                 </li>
-
             </ul>
         </div>
         <div id="main">
-            <h1>
+            <h1 class="page-title">
                 Registration
             </h1>
+            <p>Please select the appropriate registration tab below.</p>
             <div id="accordion">
                 <h3>Student Registration</h3>
                 <div>
@@ -68,8 +73,11 @@
                             <tr><td>Password:</td><td><input type="password" name="txtPassword" id="txtPassword" placeholder="[ password ]" /></td></tr>
                             <tr><td>First Name:</td><td><input type="text" name="txtUserName" id="txtUserName" placeholder="[ First Name ]" /></td></tr>
                             <tr><td>Last Name:</td><td><input type="password" name="txtPassword" id="txtPassword" placeholder="[ Last Name ]" /></td></tr>
+                            <tr><td>Email Address:</td><td><input type="email" name="txtEmail" id="txtEmail" placeholder="[ username@domain.com ]" /></td></tr>
+                            <tr><td>Telephone Number:</td><td><input type="tel" name="txtPassword" id="txtPassword" placeholder="[ Telephone Number ]" /></td></tr>
                             <tr><td>Address:</td><td><input type="text" name="txtPassword" id="txtPassword" placeholder="[ Address Line 1 ]" /></td></tr>
                             <tr><td></td><td><input type="text" name="txtUserName" id="txtUserName" placeholder="[ Address Line 2 ]" /></td></tr>
+                            <tr><td>City:</td><td><input type="text" name="txtCity" id="txtCity" placeholder="[ City ]" /></td></tr>
                             <tr>
                                 <td>State/Province:</td>
                                 <td>
@@ -83,10 +91,7 @@
                                     </select>
                                 </td>
                             </tr>
-                            <tr><td>City:</td><td><input type="text" name="txtCity" id="txtCity" placeholder="[ City ]" /></td></tr>
                             <tr><td>ZIP/Postal Code:</td><td><input type="text" name="txtZIP" id="txtZIP" placeholder="[ ZIP/Postal Code ]" /></td></tr>
-                            <tr><td>Email Address:</td><td><input type="email" name="txtEmail" id="txtEmail" placeholder="[ username@domain.com ]" /></td></tr>
-                            <tr><td>Telephone Number:</td><td><input type="tel" name="txtPassword" id="txtPassword" placeholder="[ Telephone Number ]" /></td></tr>
                             <tr><td></td><td><input type="submit" id="bntSubmitStudent" name="bntSubmitStudent" value="Register" /></td></tr>
                         </table>
                     </form>
@@ -98,14 +103,16 @@
                             <tr><th colspan="2">Create an Employer account by registering below</th></tr>
                             <tr><td>Username:</td><td><input type="text" name="txtUserName" id="txtUserName" placeholder="[ username ]" /></td></tr>
                             <tr><td>Password:</td><td><input type="password" name="txtPassword" id="txtPassword" placeholder="[ password ]" /></td></tr>
-                            <tr><td>First Name:</td><td><input type="text" name="txtUserName" id="txtUserName" placeholder="[ First Name ]" /></td></tr>
-                            <tr><td>Last Name:</td><td><input type="password" name="txtPassword" id="txtPassword" placeholder="[ Last Name ]" /></td></tr>
-                            <tr><td>Address:</td><td><input type="text" name="txtPassword" id="txtPassword" placeholder="[ Address Line 1 ]" /></td></tr>
-                            <tr><td></td><td><input type="text" name="txtUserName" id="txtUserName" placeholder="[ Address Line 2 ]" /></td></tr>
+                            <tr><td>Company Name:</td><td><input type="text" name="txtEmployerName" id="txtEmployerName" placeholder="[ Company Name ]" /></td></tr>
+                            <tr><td>Job Title:</td><td><input type="password" name="txtTitle" id="txtTitle" placeholder="[ Title ]" /></td></tr>
+                            <tr><td>Representative's Name:</td><td><input type="text" name="txtRepName" id="txtRepName" placeholder="[ Last, First ]" /></td></tr>
+                            <tr><td>Representative's Email</td><td><input type="text" name="txtRepEmail" id="txtRepEmail" placeholder="[ username@domain.com ]" /></td></tr>
+                            <tr><td>Representative's Phone</td><td><input type="text" name="txtRepPhone" id="txtRepPhone" placeholder="[ Phone ]" /></td></tr>
+                            <tr><td>City:</td><td><input type="text" name="txtCity" id="txtCity" placeholder="[ City ]" /></td></tr>
                             <tr>
                                 <td>State/Province:</td>
                                 <td>
-                                    <select name="ddlState">
+                                    <select id="ddlState" name="ddlState">
                                         <option value="" selected="selected">Select a State or Province</option>
                                         <option value="ID">Option 1</option>
                                         <option value="ID">Option 2</option>
@@ -115,10 +122,6 @@
                                     </select>
                                 </td>
                             </tr>
-                            <tr><td>City:</td><td><input type="text" name="txtCity" id="txtCity" placeholder="[ City ]" /></td></tr>
-                            <tr><td>ZIP/Postal Code:</td><td><input type="text" name="txtZIP" id="txtZIP" placeholder="[ ZIP/Postal Code ]" /></td></tr>
-                            <tr><td>Email Address:</td><td><input type="email" name="txtEmail" id="txtEmail" placeholder="[ username@domain.com ]" /></td></tr>
-                            <tr><td>Telephone Number:</td><td><input type="tel" name="txtPassword" id="txtPassword" placeholder="[ Telephone Number ]" /></td></tr>
                             <tr><td></td><td><input type="submit" id="bntSubmitStudent" name="bntSubmitStudent" value="Register" /></td></tr>
                         </table>
                     </form>
@@ -130,28 +133,12 @@
                             <tr><th colspan="2">Create a Faculty account by registering below</th></tr>
                             <tr><td>Username:</td><td><input type="text" name="txtUserName" id="txtUserName" placeholder="[ username ]" /></td></tr>
                             <tr><td>Password:</td><td><input type="password" name="txtPassword" id="txtPassword" placeholder="[ password ]" /></td></tr>
+                            <tr><td>Job Title:</td><td><input type="password" name="txtTitle" id="txtTitle" placeholder="[ Title ]" /></td></tr>
                             <tr><td>First Name:</td><td><input type="text" name="txtUserName" id="txtUserName" placeholder="[ First Name ]" /></td></tr>
                             <tr><td>Last Name:</td><td><input type="password" name="txtPassword" id="txtPassword" placeholder="[ Last Name ]" /></td></tr>
-                            <tr><td>Address:</td><td><input type="text" name="txtPassword" id="txtPassword" placeholder="[ Address Line 1 ]" /></td></tr>
-                            <tr><td></td><td><input type="text" name="txtUserName" id="txtUserName" placeholder="[ Address Line 2 ]" /></td></tr>
-                            <tr>
-                                <td>State/Province:</td>
-                                <td>
-                                    <select name="ddlState">
-                                        <option value="" selected="selected">Select a State or Province</option>
-                                        <option value="ID">Option 1</option>
-                                        <option value="ID">Option 2</option>
-                                        <option value="ID">Option 3</option>
-                                        <option value="ID">Option 4</option>
-                                        <option value="ID">Option 5</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr><td>City:</td><td><input type="text" name="txtCity" id="txtCity" placeholder="[ City ]" /></td></tr>
-                            <tr><td>ZIP/Postal Code:</td><td><input type="text" name="txtZIP" id="txtZIP" placeholder="[ ZIP/Postal Code ]" /></td></tr>
                             <tr><td>Email Address:</td><td><input type="email" name="txtEmail" id="txtEmail" placeholder="[ username@domain.com ]" /></td></tr>
-                            <tr><td>Telephone Number:</td><td><input type="tel" name="txtPassword" id="txtPassword" placeholder="[ Telephone Number ]" /></td></tr>
-                            <tr><td></td><td><input type="submit" id="bntSubmitStudent" name="bntSubmitStudent" value="Register" /></td></tr>
+                            <tr><td>Telephone Number:</td><td><input type="tel" name="txtPhone" id="txtPhone" placeholder="[ Telephone Number ]" /></td></tr>
+                            <tr><td></td><td><input type="submit" id="bntSubmitFaculty" name="bntSubmitFaculty" value="Register" /></td></tr>
                         </table>
                     </form>
                 </div><!--End Faculty registration-->
@@ -168,7 +155,7 @@
                 </li>
                 <li>
                     <a href="">
-                        This Project is based on a request for proprosal by the School of Information Science at University of Pittsburgh
+                        This Project is based on a request for proposal by the School of Information Science at University of Pittsburgh
                     </a>
                 </li>
                 <li>

@@ -146,7 +146,7 @@ img {
 }
 /*END Layout Divs*/
 /**Forms*/
-#frmLogin, #frmRegister {
+#frmLogin, #frmRegister, #frmAuthor {
     padding: 10px;
     font-size: 16px;
 }
@@ -156,14 +156,18 @@ img {
         text-align: right;
     }
 
-    #frmLogin table,  #frmRegister table {
+    #frmLogin table, #frmRegister table {
         background-color: #BBBEBC;
     }
 
-        #frmLogin table td, th, #frmRegister table td, th {
-            padding: 6px 8px;
-            vertical-align: bottom;
-        }
+    #frmAuthor table {
+        background-color: #E8E594;
+    }
+
+    #frmLogin table td, th, #frmRegister table td, th {
+        padding: 6px 8px;
+        vertical-align: bottom;
+    }
 
 
 input[type="text"], input[type="password"], input[type="email"], input[type="tel"], select {
@@ -174,9 +178,17 @@ input[type="text"], input[type="password"], input[type="email"], input[type="tel
     color: #000;
 }
 
+#txtSearchQuery {
+    font-size: 16px;
+    width: 460px;
+    height: 34px;
+    padding: 3px 10px;
+}
+
 input[type="submit"] {
     float: right;
     width: 150px;
+    height: 40px;
     padding: 6px;
     font-size: 1em;
     font-weight: bold;
@@ -189,6 +201,11 @@ input[type="submit"] {
         border: 2px inset #000;
         color: #FFF;
     }
+
+textarea {
+    width: 600px;
+    height: 60px;
+}
 /** END Forms*/
 /*MISC. SELECTORS*/
 #employer-note, #student-note, #faculty-note {
@@ -211,6 +228,7 @@ input[type="submit"] {
 #student-note {
     background-image: url(../img/logos/student-note.jpg);
 }
+
 /*END MISC. SELECTORS*/
 /*LINK STYLING*/
 a:link {
@@ -236,16 +254,17 @@ a:active { /* Active Links */
 
 /*Miscellaneous Classes */
 .page-title {
-    text-align: center;
-    margin: 8px;
+    text-align: left;
+    margin: 16px;
     padding: 4px;
     font-size: 3em;
+    border-bottom: 3px inset #BBBEBC;
 }
 
 .page-sub-title {
-    margin: 6px;
+    margin: 3px 6px;
     padding: 4px;
-    font-size: 2em;
+    font-size: 1.6em;
 }
 
 .left-align {
@@ -347,5 +366,11 @@ a:active { /* Active Links */
 .small, small {
     color: #000000;
     font: 8pt 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
+}
+.hidden {
+    visibility: hidden;
+}
+.shown {
+    visibility: visible;
 }
 /*END Miscellaneous Classes */
