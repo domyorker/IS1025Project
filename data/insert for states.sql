@@ -1,5 +1,4 @@
-user srr;
-insert into state_lookup
+insert into srr.state_lookup
 values
 (NULL, 'Alabama', 'AL'),
 (NULL, 'Alaska', 'AK'),
