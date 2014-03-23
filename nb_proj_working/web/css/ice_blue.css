@@ -65,10 +65,10 @@ p { /* All Paragraphs */
     padding: 4px;
 }
 
-    p::first-letter {
-        font-size: 2em;
-        font-weight: bold;
-    }
+p::first-letter {
+    font-size: 2em;
+    font-weight: bold;
+}
 
 hr {
     border-top: 2px groove #bebbbb;
@@ -95,13 +95,13 @@ img {
     width: 100%;
 }
 
-    #masthead #logoDIV {
-        float: left;
-    }
+#masthead #logoDIV {
+    float: left;
+}
 
-    #masthead #loginStatus {
-        float: right;
-    }
+#masthead #loginStatus {
+    float: right;
+}
 
 #main {
     background-color: #FFF;
@@ -119,22 +119,22 @@ img {
     min-height: 800px;
 }
 
-    #nav ul li {
-        display: block;
-    }
+#nav ul li {
+    display: block;
+}
 
-        #nav ul li a {
-            display: block;
-            height: 22px;
-            padding: 4px;
-            font-size: 16px;
-            font-weight: bold;
-            padding: 4px;
-        }
+#nav ul li a {
+    display: block;
+    height: 22px;
+    padding: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 4px;
+}
 
-            #nav ul li a:hover {
-                background: #FFF;
-            }
+#nav ul li a:hover {
+    background: #FFF;
+}
 
 #footer {
     width: 928px;
@@ -151,23 +151,23 @@ img {
     font-size: 16px;
 }
 
-    #frmLogin table td:first-child, #frmRegister table td:first-child {
-        padding: 4px;
-        text-align: right;
-    }
+#frmLogin table td:first-child, #frmRegister table td:first-child {
+    padding: 4px;
+    text-align: right;
+}
 
-    #frmLogin table, #frmRegister table {
-        background-color: #BBBEBC;
-    }
+#frmLogin table, #frmRegister table {
+    background-color: #BBBEBC;
+}
 
-    #frmAuthor table {
-        background-color: #E8E594;
-    }
+#frmAuthor table {
+    background-color: #E8E594;
+}
 
-    #frmLogin table td, th, #frmRegister table td, th {
-        padding: 6px 8px;
-        vertical-align: bottom;
-    }
+#frmLogin table td, th, #frmRegister table td, th {
+    padding: 6px 8px;
+    vertical-align: bottom;
+}
 
 
 input[type="text"], input[type="password"], input[type="email"], input[type="tel"], select {
@@ -197,10 +197,10 @@ input[type="submit"] {
     border: 2px outset #000;
 }
 
-    input[type="submit"]:hover {
-        border: 2px inset #000;
-        color: #FFF;
-    }
+input[type="submit"]:hover {
+    border: 2px inset #000;
+    color: #FFF;
+}
 
 textarea {
     width: 600px;
@@ -296,9 +296,9 @@ a:active { /* Active Links */
     font: 10pt 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
 }
 
-    .record a, #record a {
-        background-color: yellow;
-    }
+.record a, #record a {
+    background-color: yellow;
+}
 
 .citation, cite {
     color: #000000;
@@ -374,3 +374,25 @@ a:active { /* Active Links */
     visibility: visible;
 }
 /*END Miscellaneous Classes */
+/**Begin resume browsing styles*/
+#resume-gallery .ui-selecting { background: #FECA40; }
+#resume-gallery .ui-selected { background: #F39814; color: white; }
+#resume-gallery {width: 95%;margin: 2%; }
+#resume-gallery div {
+    min-height: 60px;
+    padding: 2px;
+    text-align: left;
+}
+#resume-gallery .name {
+    height: 18px;
+    display: block;
+    text-align: center;
+    font-weight: bold;
+    margin: 3px;
+    padding: 0.4em;
+    font-size: 1.4em; 
+}
+#resume-gallery  .resume-summary {
+    font-style: italic;
+}
+/**End resume browsing styles*/
