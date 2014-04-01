@@ -1,0 +1,419 @@
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    list-style-type: none;
+    text-decoration: none;
+}
+
+html {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    color: #000;
+}
+
+body {
+    font-size: 14px;
+    font: 10pt 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
+    background-color: #f1f1f1; /*gray color*/
+    text-align: left;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #000000;
+    margin: 4px;
+    font-family: 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
+}
+
+h1 {
+    font-size: 22pt;
+}
+
+h2 {
+    font-size: 18pt;
+}
+
+h3 {
+    font-size: 14pt;
+}
+
+h4 {
+    font-size: 12pt;
+}
+
+h5 {
+    color: #336699;
+    font-size: 10pt;
+    font-weight: bold;
+}
+
+h6 {
+    color: #336699;
+    font-size: 8pt;
+}
+
+.heading6 a {
+    background-color: transparent;
+    border: 0px;
+    padding: 0px;
+}
+
+p { /* All Paragraphs */
+    font-family: 'Times New Roman', Arial;
+    font-size: 1em;
+    line-height: 2.2em;
+    margin-bottom: 1em;
+    padding: 4px;
+}
+
+p::first-letter {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+hr {
+    border-top: 2px groove #bebbbb;
+    width: 860px;
+}
+
+img {
+    border: none;
+}
+/*Layout Divs*/
+#wrapper {
+    background-color: #677098;
+    color: #000000;
+    width: 960px;
+    margin: 10px auto;
+    border: 2px outset grey;
+    border-radius: 10px;
+    padding: 4px;
+}
+
+#masthead {
+    background-color: #677098;
+    height: 110px;
+    width: 100%;
+}
+
+#masthead #logoDIV {
+    float: left;
+}
+
+#masthead #loginStatus {
+    float: right;
+}
+
+#main {
+    background-color: #FFF;
+    width: 770px;
+    min-height: 800px;
+    float: left;
+    padding: 25px 10px 0 20px;
+}
+
+#nav {
+    background: #ADC2D6;
+    float: left;
+    padding: 15px 0 0 14px;
+    width: 146px;
+    min-height: 800px;
+}
+
+#nav ul li {
+    display: block;
+}
+
+#nav ul li a {
+    display: block;
+    height: 22px;
+    padding: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 4px;
+}
+
+#nav ul li a:hover {
+    background: #FFF;
+}
+
+#footer {
+    width: 928px;
+    padding: 8px 16px;
+    min-height: 50px;
+    background-color: #f1f1f1;
+    color: #bebbbb;
+    font-size: 12px;
+}
+/*END Layout Divs*/
+/**Forms*/
+#frmLogin, #frmRegister, #frmAuthor {
+    padding: 10px;
+    font-size: 16px;
+}
+
+#frmLogin table td:first-child, #frmRegister table td:first-child {
+    padding: 4px;
+    text-align: right;
+}
+
+#frmLogin table, #frmRegister table {
+    background-color: #BBBEBC;
+}
+
+#frmAuthor table {
+    background-color: #E8E594;
+}
+
+#frmLogin table td, th, #frmRegister table td, th {
+    padding: 6px 8px;
+    vertical-align: bottom;
+}
+
+/* error div */
+#errorDIV {
+    color: red;
+    width: 500px;
+    margin-left: 100px;
+    padding: 10px;
+}
+#errorDIV .title {
+    text-align: center;
+    color: red;
+    font-weight: bold;
+    text-decoration: underline;
+}
+#errorDIV ul{list-style-image:url('../img/x.gif');
+margin: 0 15px; }
+#errorDIV ul li {
+    padding-left: 4px;
+}
+input[type="text"], input[type="password"], input[type="email"], input[type="tel"], select {
+    font-size: 14px;
+    width: 300px;
+    height: 20px;
+    background-color: #C3DAC9;
+    color: #000;
+}
+
+#txtSearchQuery {
+    font-size: 16px;
+    width: 460px;
+    height: 34px;
+    padding: 3px 10px;
+}
+
+input[type="submit"] {
+    float: right;
+    width: 150px;
+    height: 40px;
+    padding: 6px;
+    font-size: 1em;
+    font-weight: bold;
+    background-color: #0D38FF;
+    color: #000;
+    border: 2px outset #000;
+}
+
+input[type="submit"]:hover {
+    border: 2px inset #000;
+    color: #FFF;
+}
+
+textarea {
+    width: 600px;
+    height: 60px;
+}
+/** END Forms*/
+/*MISC. SELECTORS*/
+#employer-note, #student-note, #faculty-note {
+    background: no-repeat top center #FFF;
+    display: block;
+    width: 280px;
+    border: 1px solid black;
+    padding: 26px 10px;
+    margin: 2px;
+}
+
+#employer-note {
+    background-image: url(../img/logos/employer-note.jpg);
+}
+
+#faculty-note {
+    background-image: url(../img/logos/faculty-note.jpg);
+}
+
+#student-note {
+    background-image: url(../img/logos/student-note.jpg);
+}
+
+/*END MISC. SELECTORS*/
+/*LINK STYLING*/
+a:link {
+    color: #004040;
+    font-weight: bold;
+}
+
+a:visited {
+    color: #4d4d4d;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #336699;
+    text-decoration: none;
+}
+
+a:active { /* Active Links */
+    color: #336699;
+}
+/*END LINK STYLING*/
+
+
+/*Miscellaneous Classes */
+.page-title {
+    text-align: left;
+    margin: 16px;
+    padding: 4px;
+    font-size: 3em;
+    border-bottom: 3px inset #BBBEBC;
+}
+
+.page-sub-title {
+    margin: 3px 6px;
+    padding: 4px;
+    font-size: 1.6em;
+}
+
+.left-align {
+    text-align: left;
+}
+
+.right-align {
+    text-align: right;
+}
+
+.float-right {
+    float: right;
+}
+
+.center-align {
+    text-align: center;
+}
+
+.uppercase {
+    text-transform: uppercase;
+}
+
+.clear {
+    clear: both;
+}
+
+.record, #record {
+    color: #000000;
+    font: 10pt 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
+}
+
+.record a, #record a {
+    background-color: yellow;
+}
+
+.citation, cite {
+    color: #000000;
+    font: italic 10pt 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
+}
+
+.code, code {
+    color: #000000;
+    font: 10pt 'Courier New', monospace;
+}
+
+.deco {
+    color: #d2d2d2;
+    background-color: #d2d2d2;
+}
+
+.emphasis, em {
+    color: #000000;
+    font: bold 10pt 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
+}
+
+.footer {
+    color: #000000;
+    font: 8pt 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
+    text-align: center;
+}
+
+
+.form_button {
+    color: #000000;
+    font: 14pt 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
+}
+
+.form_input {
+    color: #000000;
+    font: 14pt 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
+}
+
+.form_label {
+    color: #000000;
+    font: 14pt 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
+}
+
+.form_legend {
+    color: #336699;
+    font: bold 14pt 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
+}
+
+
+.photo {
+    color: #000000;
+    font: 10pt 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
+}
+
+.photo_box {
+    color: #d1d1d1;
+    background-color: #d1d1d1;
+}
+
+.photo_tag {
+    color: #000000;
+    font: 10pt 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
+}
+
+.small, small {
+    color: #000000;
+    font: 8pt 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif;
+}
+.hidden {
+    visibility: hidden;
+    display: none;
+    
+}
+.shown {
+    visibility: visible;
+    
+}
+/*END Miscellaneous Classes */
+/**Begin resume browsing styles*/
+#resume-gallery .ui-selecting { background: #FECA40; }
+#resume-gallery .ui-selected { background: #F39814; color: white; }
+#resume-gallery {width: 95%;margin: 2%; }
+#resume-gallery div {
+    min-height: 60px;
+    padding: 2px;
+    text-align: left;
+}
+#resume-gallery .name {
+    height: 18px;
+    display: block;
+    text-align: center;
+    font-weight: bold;
+    margin: 3px;
+    padding: 0.4em;
+    font-size: 1.4em; 
+}
+#resume-gallery  .resume-summary {
+    font-style: italic;
+}
+/**End resume browsing styles*/
