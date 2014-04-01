@@ -1,11 +1,11 @@
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+CREATE SCHEMA IF NOT EXISTS `srr` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
+USE `srr` ;
 
-CREATE SCHEMA SRR;
 -- -----------------------------------------------------
 -- Table `srr`.`state_lookup`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `srr`.`state_lookup` ;
+
 CREATE TABLE IF NOT EXISTS `srr`.`state_lookup` (
   `stateID` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(20) NOT NULL,
@@ -17,6 +17,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `srr`.`class_level`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `srr`.`class_level` ;
+
 CREATE TABLE IF NOT EXISTS `srr`.`class_level` (
   `levelID` TINYINT NOT NULL AUTO_INCREMENT,
   `levelName` CHAR(8) NOT NULL,
@@ -27,8 +29,10 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `srr`.`student_account`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `srr`.`student_account` ;
+
 CREATE TABLE IF NOT EXISTS `srr`.`student_account` (
-  `studentID` BIGINT NOT NULL,
+  `studentID` BIGINT NOT NULL AUTO_INCREMENT,
   `userName` VARCHAR(20) NOT NULL,
   `password` VARCHAR(32) NOT NULL,
   `fName` VARCHAR(45) NOT NULL,
@@ -60,6 +64,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `srr`.`skill`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `srr`.`skill` ;
+
 CREATE TABLE IF NOT EXISTS `srr`.`skill` (
   `skillID` BIGINT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(120) NOT NULL,
@@ -70,6 +76,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `srr`.`experience`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `srr`.`experience` ;
+
 CREATE TABLE IF NOT EXISTS `srr`.`experience` (
   `experienceID` BIGINT NOT NULL AUTO_INCREMENT,
   `exployer` VARCHAR(100) NOT NULL,
@@ -85,6 +93,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `srr`.`student_resume`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `srr`.`student_resume` ;
+
 CREATE TABLE IF NOT EXISTS `srr`.`student_resume` (
   `resumeID` BIGINT NOT NULL AUTO_INCREMENT,
   `userID` BIGINT NOT NULL,
@@ -102,6 +112,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `srr`.`reference`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `srr`.`reference` ;
+
 CREATE TABLE IF NOT EXISTS `srr`.`reference` (
   `resumeID` BIGINT NOT NULL,
   `Name` VARCHAR(60) NOT NULL,
@@ -121,6 +133,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `srr`.`summary`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `srr`.`summary` ;
+
 CREATE TABLE IF NOT EXISTS `srr`.`summary` (
   `resumeID` BIGINT NOT NULL,
   `objective` TEXT NULL,
@@ -138,6 +152,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `srr`.`certification`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `srr`.`certification` ;
+
 CREATE TABLE IF NOT EXISTS `srr`.`certification` (
   `certificationID` BIGINT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(100) NOT NULL,
@@ -151,6 +167,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `srr`.`membership`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `srr`.`membership` ;
+
 CREATE TABLE IF NOT EXISTS `srr`.`membership` (
   `membershipID` BIGINT NOT NULL AUTO_INCREMENT,
   `membershipName` VARCHAR(100) NOT NULL,
@@ -161,6 +179,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `srr`.`award`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `srr`.`award` ;
+
 CREATE TABLE IF NOT EXISTS `srr`.`award` (
   `awardID` BIGINT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(100) NOT NULL,
@@ -171,6 +191,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `srr`.`interest`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `srr`.`interest` ;
+
 CREATE TABLE IF NOT EXISTS `srr`.`interest` (
   `interestID` BIGINT NOT NULL AUTO_INCREMENT,
   `interestName` VARCHAR(100) NOT NULL,
@@ -181,6 +203,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `srr`.`resume_experience`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `srr`.`resume_experience` ;
+
 CREATE TABLE IF NOT EXISTS `srr`.`resume_experience` (
   `resumeID` BIGINT NOT NULL,
   `experieceID` BIGINT NOT NULL,
@@ -202,6 +226,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `srr`.`resume_interest`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `srr`.`resume_interest` ;
+
 CREATE TABLE IF NOT EXISTS `srr`.`resume_interest` (
   `resumeID` BIGINT NOT NULL,
   `interestID` BIGINT NOT NULL,
@@ -223,6 +249,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `srr`.`resume_membership`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `srr`.`resume_membership` ;
+
 CREATE TABLE IF NOT EXISTS `srr`.`resume_membership` (
   `resumeID` BIGINT NOT NULL,
   `membershipID` BIGINT NOT NULL,
@@ -244,6 +272,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `srr`.`resume_certification`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `srr`.`resume_certification` ;
+
 CREATE TABLE IF NOT EXISTS `srr`.`resume_certification` (
   `resumeID` BIGINT NOT NULL,
   `certificationID` BIGINT NOT NULL,
@@ -265,6 +295,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `srr`.`resume_award`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `srr`.`resume_award` ;
+
 CREATE TABLE IF NOT EXISTS `srr`.`resume_award` (
   `resumeID` BIGINT NOT NULL,
   `awardID` BIGINT NOT NULL,
@@ -286,6 +318,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `srr`.`resume_skill`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `srr`.`resume_skill` ;
+
 CREATE TABLE IF NOT EXISTS `srr`.`resume_skill` (
   `resumeID` BIGINT NOT NULL,
   `skillID` BIGINT NOT NULL,
@@ -307,6 +341,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `srr`.`course`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `srr`.`course` ;
+
 CREATE TABLE IF NOT EXISTS `srr`.`course` (
   `courseID` BIGINT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(65) NULL,
@@ -317,6 +353,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `srr`.`admin`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `srr`.`admin` ;
+
 CREATE TABLE IF NOT EXISTS `srr`.`admin` (
   `adminID` INT NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(45) NOT NULL,
@@ -330,6 +368,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `srr`.`resume_course`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `srr`.`resume_course` ;
+
 CREATE TABLE IF NOT EXISTS `srr`.`resume_course` (
   `resumeID` BIGINT NOT NULL,
   `courseID` BIGINT NOT NULL,
@@ -351,6 +391,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `srr`.`degree_type_lookup`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `srr`.`degree_type_lookup` ;
+
 CREATE TABLE IF NOT EXISTS `srr`.`degree_type_lookup` (
   `typeID` TINYINT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(54) NOT NULL,
@@ -362,6 +404,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `srr`.`education`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `srr`.`education` ;
+
 CREATE TABLE IF NOT EXISTS `srr`.`education` (
   `educationID` BIGINT NOT NULL AUTO_INCREMENT,
   `institution` VARCHAR(45) NULL,
@@ -383,6 +427,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `srr`.`student_education`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `srr`.`student_education` ;
+
 CREATE TABLE IF NOT EXISTS `srr`.`student_education` (
   `studentID` BIGINT NOT NULL,
   `educationID` BIGINT NOT NULL,
@@ -400,7 +446,3 @@ CREATE TABLE IF NOT EXISTS `srr`.`student_education` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
