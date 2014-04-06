@@ -41,7 +41,7 @@
             //a function to render the levels dropdown list from json
             function displayStatesListFromJson(jsonData) {
                 for (var i = 0; i < jsonData.length; i++) {
-                    $('<option/>').attr('value', jsonData[i].levelID).text(jsonData[i].name).appendTo($('#ddlState'));
+                    $('<option/>').attr('value', jsonData[i].stateID).text(jsonData[i].name).appendTo($('#ddlState'));
                 }
             }
             //a function to render the grade levels dropdown list from json
@@ -111,9 +111,9 @@
                     <% //check for the existence of errors if this is a redirect
                         String isErrorRedirect = request.getParameter("error");
                         if (isErrorRedirect != null && isErrorRedirect.equals("true")) {
-                            String errorList = (String) session.getAttribute("errorList");
+                            String errorList = (String) session.getAttribute("errorMsg");
                             if (errorList != null && !errorList.isEmpty()) {
-                                out.println("<h3 class='title'>Errors found.</h3>");
+                                out.println("<h3 class='title'>Errors found...</h3>");
                                 out.println(errorList);
                             }
                         }
@@ -123,13 +123,13 @@
                 <div id="student-registration">
                     <h3>Student Registration</h3>
                     <div>
-                        <form id="frmRegister" name="frmRegister" action="Manage?action=register" method="post">
+                        <form id="frmRegister" name="frmRegister" action="register" method="post">
                             <table>
                                 <tr><th colspan="2">Create a Student account by registering below</th></tr>
                                 <tr><td>Username:</td><td><input type="text" name="txtUserName" id="txtUserName" value="${param.t}" placeholder="[ username ]" /></td></tr>
                                 <tr><td>Password:</td><td><input type="password" name="txtPassword" id="txtPassword" placeholder="[ password ]" /></td></tr>
                                 <tr><td>First Name:</td><td><input type="text" name="txtFirstName" id="txtFirstName" placeholder="[ First Name ]" /></td></tr>
-                                <tr><td>Last Name:</td><td><input type="password" name="txtLastName" id="txtLastName" placeholder="[ Last Name ]" /></td></tr>
+                                <tr><td>Last Name:</td><td><input type="text" name="txtLastName" id="txtLastName" placeholder="[ Last Name ]" /></td></tr>
                                 <tr>
                                     <td>Grade Level:</td>
                                     <td>

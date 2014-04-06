@@ -84,39 +84,22 @@
                     Browse the Gallery
                 </h1>
                 <div id="resume-gallery">
-                    <div class = "ui-widget-content" id="200">
-                        <span class="name">Marte, Jose</span>
-                        <span class="resume-summary" >To obtain an entry-level position as a web developer in a creative and dynamic company</span>
-                    </div>
-                    <div class = "ui-widget-content"  id="201">
-                        <span class="name">Lucas, Roger</span >
-                        <span class="resume-summary">Aliquam erat volutspanat. Ut arcu leo, suscispanit in orci ut, varius commodo sem.</span >
-                    </div>
-                    <div class = "ui-widget-content"  id="202">
-                        <span class="name">Last, First</span >
-                        <span class="resume-summary">Fusce eros mauris, facilisis sit amet vestibulum eget, ultricies sed lectus. Praesent eget libero in massa ultrices sagittis. </span >
-                    </div>
-                    <div class = "ui-widget-content"  id="203">
-                        <span class="name">Last, First</span >
-                        <span class="resume-summary">Cras rhoncus varius tempus. Nullam convallis diam in molestie molestie. Praesent porttitor molestie nibh sed porta. Interdum et malesuada fames ac ante ipsum primis in faucibus.</span >
-                    </div>
-                    <div class = "ui-widget-content"  id="204">
-                        <span class="name">Last, First</span >
-                        <span class="resume-summary">Nulla non magna tellus. Nullam ullamcorper, dui id venenatis pellentesque, justo dui ultrices nulla, a ultricies eros nunc vitae nunc.</span >
-                    </div>
-                    <div class = "ui-widget-content"  id="205">
-                        <span class="name">Last, First</span >
-                        <span class="resume-summary">Nullam in enim ac saspanien suscispanit elementum vel at tellus. Donec molestie nisi et augue facilisis, at aliquam ipsum ornare. In viverra nisl quis ante imspanerdiet hendrerit.</span >
-                    </div>
-                    <div class = "ui-widget-content"  id="205">
-                        <span class="name">Last, First</span >
-                        <span class="resume-summary"> Morbi quis nunc nulla. Pellentesque euismod erat erat, et vehicula ligula mollis vitae. Pellentesque eleifend posuere molestie.</span >
-                    </div>
-                    <div class = "ui-widget-content"  id="206">
+                    <%
+                 ///query db for all resumes
+                        /*
+                        while(rs.next()) {
+                        out.println("<div class='ui-widget-content' id='" + rs.getString("resumeID") +  "'>");
+                        ...span 1
+                        
+                        }
+                        */
+                    %>
+                </div>-->
+<!--                    <div class = "ui-widget-content"  id="206">
                         <span class="name">Last, First</span >
                         <span class="resume-summary">Vivamus aliquam lobortis dui, a egestas nisi spanlacerat vitae. Pellentesque sit amet spanretium dui, vel mollis orci.</span >
                     </div>
-                </div>
+                </div>-->
                 <div class="clear"></div><!--important-->
             </div>
             <div class="clear"></div>

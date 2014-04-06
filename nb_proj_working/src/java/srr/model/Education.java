@@ -1,12 +1,13 @@
 package srr.model;
 
-import srr.utilities.DbUtilities;
+import java.math.BigInteger;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
+import srr.utilities.DbUtilities;
 
 /**
  *
@@ -14,7 +15,7 @@ import org.json.JSONObject;
  */
 public class Education {
 
-    private String educationID;
+    private BigInteger educationID;
     private String institution;
     private int graduationMonth;
     private int graduationYear;
@@ -23,7 +24,12 @@ public class Education {
     private String city;
     private int stateID;
     private DbUtilities db;
-
+/**
+ * Empty constructor 
+ */
+    public Education() {
+        
+    }
     /**
      * Constructor takes in educationID and retrieves the record from the
      * database
@@ -41,7 +47,7 @@ public class Education {
             while (rs.next()) {
                 this.graduationMonth = rs.getInt("graduationMonth");
                 this.graduationYear = rs.getInt("graduationYear");
-                this.educationID = rs.getString("educationID");
+                this.educationID = BigInteger.valueOf(rs.getLong("educationID"));
 
                 this.city = rs.getString("city");
                 this.stateID = rs.getInt("stateID");

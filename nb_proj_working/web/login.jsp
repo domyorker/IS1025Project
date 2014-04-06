@@ -66,14 +66,27 @@
                 </ul>
             </div>
             <div id="main">
-                <div id="errorDIV" >
-                  
+                <div id="errorDIV">
+                    <span>
+                        <% String isSuccessRedirect = request.getParameter("success");
+                            String isErrorRedirect = request.getParameter("error");
+                            if (isSuccessRedirect != null && isSuccessRedirect.equals("true")) {
+                                String msg = (String) session.getAttribute("successMsg");
+                                out.println(msg);
+                            } else if (isErrorRedirect != null && isErrorRedirect.equals("true")) {
+                                String msg = (String) session.getAttribute("errorList");
+                                out.println(msg);
+                            }
+
+                        %>
+                    </span>
                 </div>
                 <h1 class="page-title">
                     Login
                 </h1>
                 <form id="frmLogin" name="frmLogin" action="login" method="post">
                     <table>
+
                         <tr><th colspan="2">Enter your credentials below</th></tr>
                         <tr><td>Username:</td><td><input type="text" name="txtUserName" id="txtUserName" placeholder="[ username ]" /></td></tr>
                         <tr><td>Password:</td><td><input type="password" name="txtPassword" id="txtPassword" placeholder="[ password ]" /></td></tr>

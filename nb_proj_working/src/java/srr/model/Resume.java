@@ -32,7 +32,21 @@ public class Resume {
     private ArrayList<Reference> referencesList;
     private ArrayList<Skill> skillsList;
     private DbUtilities db;
-    ResultSet rs;
+    private ResultSet rs;
+    
+    public Resume(){
+        
+    }
+
+    /**
+     * Constructor takes in a title to instantiate this object
+     *
+     * @param title
+     */
+    public Resume(String title) {
+        this.userID = null;
+        this.title = title;
+    }
 
     /**
      * Constructor takes in an ID and a title; populates those fields
@@ -48,44 +62,38 @@ public class Resume {
     /**
      * Constructor takes in an ID and populates all fields from the database
      *
-     * @param ID The record's id
+     * @param ID The record's id as a String
      *
      */
-    public Resume(BigInteger ID) {
+    public void loadResume(String ID) {
 
-        this.resumeID = ID;
-        DbUtilities db = new DbUtilities();
         try {
-            ResultSet rs = db.getResultSet("SELECT title FROM srr.student_resume WHERE resumeID ='" + resumeID + "'");
+            this.setResumeID(new BigInteger(ID.getBytes())); //gettting a String, so convert it to bigInt
+        } catch (Exception ex) {
+            System.out.println("An error has occured in loadResume while converting String to BigInteger." + ex.getMessage());
+        }
+        db = new DbUtilities();
+        try {
+            rs = db.getResultSet("SELECT title FROM srr.student_resume WHERE resumeID ='" + ID + "'");
+            //set the title
             while (rs.next()) {
-                this.title = rs.getString("title");
+                this.setTitle(rs.getString("title"));
             }
 
             rs = db.getResultSet("SELECT * FROM srr.summary WHERE resumeID ='"
-                    + this.resumeID + "'");
-
-            while (rs.next()) {
-                String objective = rs.getString("objective");
-                if (objective != null) {
-                    this.objective = objective;
-                }
-                String experience = rs.getString("experience");
-
-                if (experience != null) {
-                    this.experience = experience;
-                }
-                String accomplishments = rs.getString("accomplishments");
-                if (accomplishments != null) {
-                    this.accomplishments = accomplishments;
-                }
-
+                    + this.getResumeID() + "'");
+            if (rs.next()) {
+                this.setObjective(rs.getString("objective"));
+                this.setExperience(rs.getString("experience"));
+                this.setAccomplishments(rs.getString("accomplishments"));
             }
-
         } catch (SQLException ex) {
             Logger.getLogger(Resume.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            db.releaseConnection();
         }
         //start filling in related tables..
-        this.certificationsList = getCertificationsFromDb(resumeID);
+       // this.certificationsList = getCertificationsFromDb(this.resumeID);
 
     }
 
@@ -154,5 +162,192 @@ public class Resume {
             db.releaseConnection();
         }
         return tempList;
+    }
+
+    public boolean commitToDb(StudentAccount account) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    /**
+     * A getter method to obtain the resume's ID
+     * @return the resumeID
+     */
+    public BigInteger getResumeID() {
+        return this.resumeID;
+    }
+
+    /**
+     * @param resumeID the resumeID to set
+     */
+    public void setResumeID(BigInteger resumeID) {
+        this.resumeID = resumeID;
+    }
+
+    /**
+     * @return the userID
+     */
+    public BigInteger getUserID() {
+        return this.userID;
+    }
+
+    /**
+     * @param userID the userID to set
+     */
+    public void setUserID(BigInteger userID) {
+        this.userID = userID;
+    }
+
+    /**
+     * @return the title
+     */
+    public String getTitle() {
+        return this.title;
+    }
+
+    /**
+     * @param title the title to set
+     */
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    /**
+     * @return the objective
+     */
+    public String getObjective() {
+        return objective;
+    }
+
+    /**
+     * @param objective the objective to set
+     */
+    public void setObjective(String objective) {
+        this.objective = objective;
+    }
+
+    /**
+     * @return the experience
+     */
+    public String getExperience() {
+        return experience;
+    }
+
+    /**
+     * @param experience the experience to set
+     */
+    public void setExperience(String experience) {
+        this.experience = experience;
+    }
+
+    /**
+     * @return the accomplishments
+     */
+    public String getAccomplishments() {
+        return accomplishments;
+    }
+
+    /**
+     * @param accomplishments the accomplishments to set
+     */
+    public void setAccomplishments(String accomplishments) {
+        this.accomplishments = accomplishments;
+    }
+
+    /**
+     * @return the certificationsList
+     */
+    public ArrayList<Certification> getCertificationsList() {
+        return certificationsList;
+    }
+
+    /**
+     * @param certificationsList the certificationsList to set
+     */
+    public void setCertificationsList(ArrayList<Certification> certificationsList) {
+        this.certificationsList = certificationsList;
+    }
+
+    /**
+     * @return the coursesList
+     */
+    public ArrayList<Course> getCoursesList() {
+        return coursesList;
+    }
+
+    /**
+     * @param coursesList the coursesList to set
+     */
+    public void setCoursesList(ArrayList<Course> coursesList) {
+        this.coursesList = coursesList;
+    }
+
+    /**
+     * @return the educationList
+     */
+    public ArrayList<Education> getEducationList() {
+        return educationList;
+    }
+
+    /**
+     * @param educationList the educationList to set
+     */
+    public void setEducationList(ArrayList<Education> educationList) {
+        this.educationList = educationList;
+    }
+
+    /**
+     * @return the interestsList
+     */
+    public ArrayList<Interest> getInterestsList() {
+        return interestsList;
+    }
+
+    /**
+     * @param interestsList the interestsList to set
+     */
+    public void setInterestsList(ArrayList<Interest> interestsList) {
+        this.interestsList = interestsList;
+    }
+
+    /**
+     * @return the membershipsList
+     */
+    public ArrayList<Membership> getMembershipsList() {
+        return membershipsList;
+    }
+
+    /**
+     * @param membershipsList the membershipsList to set
+     */
+    public void setMembershipsList(ArrayList<Membership> membershipsList) {
+        this.membershipsList = membershipsList;
+    }
+
+    /**
+     * @return the referencesList
+     */
+    public ArrayList<Reference> getReferencesList() {
+        return referencesList;
+    }
+
+    /**
+     * @param referencesList the referencesList to set
+     */
+    public void setReferencesList(ArrayList<Reference> referencesList) {
+        this.referencesList = referencesList;
+    }
+
+    /**
+     * @return the skillsList
+     */
+    public ArrayList<Skill> getSkillsList() {
+        return skillsList;
+    }
+
+    /**
+     * @param skillsList the skillsList to set
+     */
+    public void setSkillsList(ArrayList<Skill> skillsList) {
+        this.skillsList = skillsList;
     }
 }

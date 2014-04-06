@@ -89,33 +89,41 @@
                 <h1 class="page-title">
                     Resume Management
                 </h1>
-                <div id="divMessages">
-                    <%
-                        String msg = request.getParameter("msg");
-                        if (msg != null && !msg.isEmpty()) {
-                            out.println("<p class='info'>" + msg + "</p>");
+                <div id="errorDIV">
+                    <% //check for the existence of errors if this is a redirect
+                        String isErrorRedirect = request.getParameter("error");
+                        if (isErrorRedirect != null && isErrorRedirect.equals("true")) {
+                            String errorList = (String) session.getAttribute("errorList");
+                            if (errorList != null && !errorList.isEmpty()) {
+                                out.println("<h3 class='title'>Errors found...</h3>");
+                                out.println(errorList);
+                            }
                         }
                     %>
                 </div>
-                <form id="frmAuthor" name="frmAuthor" action="Manage?action=addResume" method="post">
-                    <table>
-                        <tr><th colspan="2">Your Resumes</th></tr>
-                        <tr><td colspan="2">                 <div id="divResumes">
-                                    <%
-                                        out.print("Getting your resumes....");
+                <table>
+                    <tr><th colspan="2">Your Resumes</th></tr>
+                    <tr><td colspan="2">                 <div id="divResumes">
+                                <%
+                                    out.println("Getting your resumes....");
 
-                                        //  String strCurrentResume = (String) session.getAttribute("currentResumeID");
-                                        //go through list of resumes: simulated for now. Need to query db through 
-                                        out.println("<ul id='resumeList'>");
-                                        for (int i = 1; i <= 10; i++) {
-                                            out.println("<li>");
-                                            out.println("<a href='Manage?action=editResume&resumeID=" + i + "'>Simulated [dataset] Resume #" + i + "</a>");
-                                            out.println("</li>");
-                                        }
-                                        out.println("</ul>"); //end the list
-%>
-                                </div></td></tr>
-                        <tr><td><input type="text" id="txtResumeName" name="txtResumeName"/></td><td><button id="btnCreateResume" name="btnCreateResume" type="submit">Create new Resume</button></td></tr>
+                                  out.println("call up the list of resumes");
+//                                    out.println("<ul id='resumeList'>");
+//                                    for (int i = 1; i <= 10; i++) {
+//                                        out.println("<li>");
+//                                        out.println("<a href='author?action=edit&resumeID=" + i + "'>Simulated [dataset] Resume #" + i + "</a>");
+//                                        out.println("</li>");
+//                                    }
+//                                    out.println("</ul>"); //end the list
+                                %>
+                            </div></td></tr>
+                </table>
+                <form id="frmAuthor" name="frmAuthor" action="author?action=create" method="post">
+                    <table>
+                        <tr>
+                            <td><input type="text" id="txtResumeName" name="txtResumeName"/></td>
+                            <td><button id="btnCreateResume" name="btnCreateResume" type="submit">Create new Resume</button></td>
+                        </tr>
                     </table>
                 </form>
             </div>

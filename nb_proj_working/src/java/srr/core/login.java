@@ -4,7 +4,7 @@
 package srr.core;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.math.BigInteger;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -39,31 +39,49 @@ public class login extends HttpServlet {
             throws ServletException, IOException {
 
         HttpSession session = request.getSession(true);
-        PrintWriter out = response.getWriter();
-        String userName = request.getParameter("txtUserName");
-        String psw = encodePassword(request.getParameter("txtPassword")); //hash the plain text psw
+        session.setMaxInactiveInterval(8000);
 
-        String sql = "SELECT * FROM srr.student_account WHERE userName ='" + userName + "';";
+        String userName = request.getParameter("txtUserName");
+        String psw = request.getParameter("txtPassword");
+        boolean errorsPresent = false;
+        String errorMsg = "<ul><li>Invalid credentials. Please try again.</li></ul>";
+
+        psw = encodePassword(psw); //encode the password
+        String sql = "SELECT * FROM srr.student_account WHERE userName ='" + userName + "' AND password ='" + psw + "';";
 
         DbUtilities db = new DbUtilities();
         ResultSet rs;
 
         try {
             rs = db.getResultSet(sql);
+            System.out.println("b4 MATCH?");
             if (rs.next()) {
-                //TODO: record count needs to be 1 for added security
-                if (rs.getString("userName").equals(userName) && rs.getString("password").equals(psw)) {
-                    //create StudentAccount instance and populate it from db to store in session
-                    StudentAccount thisAccount = new StudentAccount(userName);
-                    //put the student object in session
-                    session.setAttribute("jsonStudent", thisAccount.getStudentAccountAsJSON());
-                    session.setAttribute("userName", thisAccount.getUserName());
-                    System.out.print("user logged in as: " + userName); //**********
-                    response.sendRedirect("index.jsp");
-                }
-                else {
-                    response.sendRedirect("login.jsp?error=true");
-                }
+                //create StudentAccount instance and populate it from db to store in session
+                StudentAccount thisAccount = new StudentAccount(BigInteger.valueOf(rs.getLong("studentID")));
+                thisAccount.setFirstName(rs.getString("fName"));
+                thisAccount.setLastName(rs.getString("lName"));
+                thisAccount.setEmail(rs.getString("email"));
+                thisAccount.setPhone(rs.getString("phone"));
+                thisAccount.setClassLevelID(rs.getInt("classLevelID"));
+                thisAccount.setAddressLine1(rs.getString("addressLine1"));
+                thisAccount.setAddressLine2(rs.getString("addressLine2"));
+                thisAccount.setCity(rs.getString("city"));
+                thisAccount.setStateID(rs.getInt("stateID"));
+                thisAccount.setZIP(rs.getString("ZIP"));
+
+                //put the student object in session
+                session.setAttribute("StudentAccount", thisAccount);
+                session.setAttribute("userName", thisAccount.getUserName());
+            } else { //login not found
+                errorsPresent = true;
+            }
+            if (!errorsPresent) {
+                String redir = response.encodeRedirectURL("index.jsp");
+                response.sendRedirect(redir);
+            } else {
+                session.setAttribute("errorList", errorMsg);
+                String redir = response.encodeRedirectURL("login.jsp?error=true");
+                response.sendRedirect(redir);
             }
         } catch (SQLException ex) {
             Logger.getLogger(login.class.getName()).log(Level.SEVERE, null, ex);
