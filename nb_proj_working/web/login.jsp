@@ -4,6 +4,7 @@
     Author     : Jose Marte
 --%>
 
+<%@page import="srr.model.StudentAccount"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -19,10 +20,10 @@
             <div id="masthead">
                 <div id="logoDIV"><img src="img/logos/srr-banner.jpg" alt="School of Information Science Logo" /></div>
                 <div id="loginStatus">
-                    <%
-                        String userName = (String) session.getAttribute("userName");
-                        if (userName != null) {
-                            out.print("Logged in as " + userName);
+                    <%                        StudentAccount userAccount = null;
+                        if (session.getAttribute("StudentAccount") != null) {
+                            userAccount = (StudentAccount) session.getAttribute("StudentAccount");
+                            out.print("Logged in as " + userAccount.getUserName());
                             out.print(" | <a href='logout'>Logout</a>");
                         } else {
                             out.print("<a href='login.jsp'>Login</a> | <a href='register.jsp'>Register</a>");
@@ -39,7 +40,7 @@
                         </a>
                     </li>
                     <li id="navAuthorLink">
-                        <a href="author.jsp">
+                        <a href="manage.jsp">
                             Manage Resumes
                         </a>
                     </li>

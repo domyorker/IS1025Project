@@ -1,9 +1,12 @@
 <%-- 
     Document   : browse
     Created on : Mar 29, 2014, 5:39:22 PM
-    Author     : Jose Marte
+    Author     : Sean Carney
 --%>
 
+<%@page import="java.math.BigInteger"%>
+<%@page import="java.sql.ResultSet"%>
+<%@page import="srr.utilities.DbUtilities"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -85,21 +88,35 @@
                 </h1>
                 <div id="resume-gallery">
                     <%
-                 ///query db for all resumes
+                    //BigInteger studentID = BigInteger.valueOf(0);
+                    long studentID = 0;
+                    long resumeID = 0;
+                    String lastName = "";
+                    String firstName = "";
+                    String objective = "obj";
+                    String sql = "SELECT studentID, srr.student_resume.resumeID, lName, fName, objective from srr.student_resume ";
+                    sql += "JOIN srr.student_account on userID = studentID ";
+                    sql += "JOIN srr.summary on srr.summary.resumeID = srr.student_resume.resumeID;";
+                    DbUtilities db = new DbUtilities();
+                    ResultSet rs = db.getResultSet(sql);
+                    while (rs.next()){
+                        studentID = rs.getLong("studentID");
+                        resumeID = rs.getLong("student_resume.resumeID");
+                        lastName = rs.getString("lName");
+                        firstName = rs.getString("fName");
+                        objective = rs.getString("objective");
+                        out.println("<div class = 'ui-widget-content' id='" + resumeID + "'>");
+                        out.println("<span class='name'>" + lastName + ", " + firstName + "</span>");
+                        out.println("<span class='resume-summary' >" + objective + "</span>");
+                        out.println("</div>");
                         /*
-                        while(rs.next()) {
-                        out.println("<div class='ui-widget-content' id='" + rs.getString("resumeID") +  "'>");
-                        ...span 1
-                        
-                        }
+                        out.print("<select>");
+                        //build the items...name of resume 
                         */
-                    %>
-                </div>-->
-<!--                    <div class = "ui-widget-content"  id="206">
-                        <span class="name">Last, First</span >
-                        <span class="resume-summary">Vivamus aliquam lobortis dui, a egestas nisi spanlacerat vitae. Pellentesque sit amet spanretium dui, vel mollis orci.</span >
-                    </div>
-                </div>-->
+                    }
+
+                   %>         
+                </div>
                 <div class="clear"></div><!--important-->
             </div>
             <div class="clear"></div>

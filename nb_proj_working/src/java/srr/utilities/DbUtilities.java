@@ -1,5 +1,6 @@
 package srr.utilities;
 
+import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -101,14 +102,16 @@ public class DbUtilities {
      * @return true if execution succeeded, false if failed
      * @throws java.sql.SQLException
      */
-    public boolean executeQuery(String sql) throws SQLException {
+    public ResultSet executeQuery(String sql) throws SQLException {
         if (conn == null) {
             createDbConnection();
         }
         Statement statement = conn.createStatement();
-        statement.executeUpdate(sql); // execute query
-        return true; //success
+        
+        statement.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS); // execute query
+        return  statement.getGeneratedKeys();
     }
+    
 
     /**
      * This method converts a ResultSet into a JSON object

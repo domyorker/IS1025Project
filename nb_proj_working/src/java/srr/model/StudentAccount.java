@@ -1,9 +1,14 @@
 package srr.model;
 
 import java.math.BigInteger;
+import java.sql.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.JSONArray;
@@ -35,6 +40,7 @@ public class StudentAccount {
     private int classLevelID;
     //education is a 1 to many rel.
     ArrayList<Education> educationList;
+    ArrayList<Resume> resumeList;
 
     private DbUtilities db;
 
@@ -57,6 +63,44 @@ public class StudentAccount {
     public StudentAccount(String userName, String password) {
         this.userName = userName;
         this.password = password;
+    }
+
+    /**
+     * A method to obtain this account's associated resume IDs.
+     *
+     * @return
+     */
+    public HashMap getResumeList() {
+
+        String sql;
+        ResultSet rs;
+        BigInteger tempID;
+        String tempTitle;
+        //ID required...;
+        HashMap tempList =new HashMap();
+      
+       
+        if (this.studentID == null) {
+            return null;
+        }
+        sql = "SELECT resumeID, title FROM srr.student_resume WHERE userID=" + this.studentID;
+
+        try {
+            db = new DbUtilities();
+            rs = db.getResultSet(sql);
+            while (rs.next()) { 
+                tempID = BigInteger.valueOf(rs.getLong("resumeID"));
+                tempTitle = rs.getString("title");
+
+                tempList.put(tempID, tempTitle);
+            }
+        } catch (SQLException | NullPointerException ex) {
+            System.out.println("Exception in getResumeList: " + ex.getMessage());
+            return null;
+        } finally {
+            db.releaseConnection();
+        }
+        return tempList;
     }
 
     /**
@@ -86,11 +130,8 @@ public class StudentAccount {
         DbUtilities db = new DbUtilities();
         boolean success = false;
         try {
-            success = db.executeQuery(sql);
-            System.out.println("Success!"); //***********
+            ResultSet rsIdentityKeys = db.executeQuery(sql);
         } catch (SQLException ex) {
-            Logger.getLogger(StudentAccount.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("The sql string: " + sql); //*****************
             System.out.println("Error: " + ex.getMessage());
         }
         return success;
@@ -112,16 +153,13 @@ public class StudentAccount {
             ResultSet rs;
             try {
                 rs = db.getResultSet(sql);
-                if (!rs.first() ) { //no rows
+                if (!rs.first()) { //no rows
                     exists = false;
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(StudentAccount.class.getName()).log(Level.SEVERE, null, ex);
-                System.out.println("The sql string: " + sql); //*****************
                 System.out.println("Error: " + ex.getMessage());
             } finally {
                 db.releaseConnection();
-                System.out.println("RESEASED CONNECTION in isExisting");
             }
         }
         return exists; //default to true = user exists
@@ -154,9 +192,6 @@ public class StudentAccount {
                 this.classLevelID = rs.getInt("classLevelID");
             }
         } catch (SQLException ex) {
-            Logger.getLogger(StudentAccount.class
-                    .getName()).log(Level.SEVERE, null, ex);
-            System.out.println("The sql string: " + sql); //*****************
             System.out.println("Error: " + ex.getMessage());
         }
 
@@ -181,13 +216,13 @@ public class StudentAccount {
             studentJSON.put("stateID", this.stateID);
             studentJSON.put("zip", this.ZIP);
 
-          //  for (Education tempEd : getEducationList()) {
-          //      jsonEducationList.put(tempEd.getEducationAsJSON());
-          //  }
+            //  for (Education tempEd : getEducationList()) {
+            //      jsonEducationList.put(tempEd.getEducationAsJSON());
+            //  }
             studentJSON.put("EducationList", jsonEducationList); //add the education list
         } catch (JSONException ex) {
-         //need to work on error logging (a consistent method): not priority
-            System.out.println ("Error in constructor of StudentAccount: " + ex.getMessage());
+            //need to work on error logging (a consistent method): not priority
+            System.out.println("Error in constructor of StudentAccount: " + ex.getMessage());
         }
 
         return studentJSON;

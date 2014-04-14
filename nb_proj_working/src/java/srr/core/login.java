@@ -54,7 +54,6 @@ public class login extends HttpServlet {
 
         try {
             rs = db.getResultSet(sql);
-            System.out.println("b4 MATCH?");
             if (rs.next()) {
                 //create StudentAccount instance and populate it from db to store in session
                 StudentAccount thisAccount = new StudentAccount(BigInteger.valueOf(rs.getLong("studentID")));
@@ -71,7 +70,6 @@ public class login extends HttpServlet {
 
                 //put the student object in session
                 session.setAttribute("StudentAccount", thisAccount);
-                session.setAttribute("userName", thisAccount.getUserName());
             } else { //login not found
                 errorsPresent = true;
             }

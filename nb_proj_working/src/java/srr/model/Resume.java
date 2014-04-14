@@ -3,10 +3,13 @@ package srr.model;
 import java.math.BigInteger;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import srr.utilities.DbUtilities;
+import static srr.utilities.StringUtilities.cleanMySqlInsert;
+import static srr.utilities.StringUtilities.encodePassword;
 
 /**
  * A class to represent a resume
@@ -16,7 +19,7 @@ import srr.utilities.DbUtilities;
  */
 public class Resume {
 
-    private BigInteger resumeID; //AUTO_INCREMENT
+    private BigInteger resumeID = null; //AUTO_INCREMENT
     private BigInteger userID;
     private String title;
     private String objective;
@@ -31,11 +34,25 @@ public class Resume {
     private ArrayList<Membership> membershipsList;
     private ArrayList<Reference> referencesList;
     private ArrayList<Skill> skillsList;
+    private ArrayList<Experience> experienceList;
     private DbUtilities db;
     private ResultSet rs;
-    
-    public Resume(){
-        
+
+    /**
+     * Empty constructor
+     */
+    public Resume() {
+
+    }
+
+    /**
+     * Constructor takes in an ID and loads the record from the database
+     *
+     * @param ID The ID of the resume in the database
+     */
+    public Resume(BigInteger ID) {
+        this.resumeID = ID;
+        loadFromDb();
     }
 
     /**
@@ -45,6 +62,7 @@ public class Resume {
      */
     public Resume(String title) {
         this.userID = null;
+        this.resumeID = null;
         this.title = title;
     }
 
@@ -60,40 +78,62 @@ public class Resume {
     }
 
     /**
+     * Helper method to load the resume given a String ID
+     *
+     * @param ID The ID as a String
+     * @return True on success
+     */
+    public boolean loadFromString(String ID) {
+        this.resumeID = new BigInteger(ID);
+        System.out.println("LATEST: this resume's ID: " + this.getResumeID());
+        return (loadFromDb());
+
+    }
+
+    /**
      * Constructor takes in an ID and populates all fields from the database
      *
      * @param ID The record's id as a String
      *
      */
-    public void loadResume(String ID) {
-
-        try {
-            this.setResumeID(new BigInteger(ID.getBytes())); //gettting a String, so convert it to bigInt
-        } catch (Exception ex) {
-            System.out.println("An error has occured in loadResume while converting String to BigInteger." + ex.getMessage());
+    private boolean loadFromDb() {
+        if (this.resumeID == null) {
+            return false;
         }
+        boolean success = false;
+
         db = new DbUtilities();
         try {
-            rs = db.getResultSet("SELECT title FROM srr.student_resume WHERE resumeID ='" + ID + "'");
+            rs = db.getResultSet("SELECT * FROM srr.student_resume WHERE resumeID ='" + this.resumeID + "'");
             //set the title
-            while (rs.next()) {
+            if (rs.next()) {
                 this.setTitle(rs.getString("title"));
             }
 
             rs = db.getResultSet("SELECT * FROM srr.summary WHERE resumeID ='"
-                    + this.getResumeID() + "'");
+                    + this.resumeID + "'");
             if (rs.next()) {
                 this.setObjective(rs.getString("objective"));
                 this.setExperience(rs.getString("experience"));
                 this.setAccomplishments(rs.getString("accomplishments"));
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(Resume.class.getName()).log(Level.SEVERE, null, ex);
+            rs = db.getResultSet("SELECT * FROM srr.resume_skill WHERE resumeID ='"
+                    + this.resumeID + "'");
+            while (rs.next()) {
+                if (this.skillsList == null) {
+                    this.skillsList = new ArrayList<>();
+                }
+                this.skillsList.add(new Skill(BigInteger.valueOf(rs.getLong("skillID"))));
+            }
+            success = true;
+        } catch (SQLException | NullPointerException ex) {
+            System.out.println("Error while trying to load the resume: " + ex.getStackTrace());
+            success = false;
         } finally {
             db.releaseConnection();
+
         }
-        //start filling in related tables..
-       // this.certificationsList = getCertificationsFromDb(this.resumeID);
+        return success;
 
     }
 
@@ -164,12 +204,62 @@ public class Resume {
         return tempList;
     }
 
+    /**
+     * Commit for the first time
+     *
+     * @param account
+     * @return
+     */
     public boolean commitToDb(StudentAccount account) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean success = false;
+        String sql = "";
+        ResultSet rs;
+
+        if (this.resumeID != null) {
+            return true; //already saved, must use update() to make changes
+        }
+        sql = "INSERT INTO srr.student_resume (resumeID, userID, title) "
+                + "VALUES (NULL, " + account.getStudentID() + ", '" + this.title + "');";
+
+        this.db = new DbUtilities();
+        try {
+            rs = db.executeQuery(sql);
+            if (rs.next()) {//grab the generated ID
+                this.resumeID = BigInteger.valueOf(rs.getLong(1));
+                //NOW SAVE THE SKILLS
+                if (this.skillsList != null) {
+                    for (Skill skill : this.skillsList) {
+                        skill.commitToDb(this.resumeID);
+                    }
+                }
+                success = true;
+            } else {
+                return success; //failed to commit to db
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("The sql string: " + sql); //*****************
+            System.out.println("Error: " + ex.getMessage());
+        } // NOW FOR THE SUMMARY
+        sql = "INSERT INTO srr.summary VALUES(" + this.resumeID + ", '" + cleanMySqlInsert(this.objective) + "', '";
+        sql += cleanMySqlInsert(this.experience) + "', '" + cleanMySqlInsert(this.accomplishments) + "');";
+        this.db = new DbUtilities();
+        try {
+            rs = db.executeQuery(sql);
+            rs = null;
+            success = true;
+        } catch (SQLException ex) {
+            System.out.println("The sql string: " + sql); //*****************
+            System.out.println("Error: " + ex.getMessage());
+        } finally {
+            db.releaseConnection();
+        }
+        return success;
     }
 
     /**
      * A getter method to obtain the resume's ID
+     *
      * @return the resumeID
      */
     public BigInteger getResumeID() {
@@ -215,6 +305,9 @@ public class Resume {
      * @return the objective
      */
     public String getObjective() {
+        if (objective == null) {
+            objective = "";
+        }
         return objective;
     }
 
@@ -229,6 +322,9 @@ public class Resume {
      * @return the experience
      */
     public String getExperience() {
+        if (experience == null) {
+            experience = "";
+        }
         return experience;
     }
 
@@ -243,6 +339,9 @@ public class Resume {
      * @return the accomplishments
      */
     public String getAccomplishments() {
+        if (accomplishments == null) {
+            accomplishments = "";
+        }
         return accomplishments;
     }
 
@@ -341,7 +440,7 @@ public class Resume {
      * @return the skillsList
      */
     public ArrayList<Skill> getSkillsList() {
-        return skillsList;
+        return this.skillsList;
     }
 
     /**
@@ -349,5 +448,105 @@ public class Resume {
      */
     public void setSkillsList(ArrayList<Skill> skillsList) {
         this.skillsList = skillsList;
+    }
+
+    /**
+     * Updates this resume in the DB
+     *
+     * @return True if successful, false otherwise
+     */
+    public boolean update() {
+        boolean success = false;
+        ResultSet rs;
+        String sqlTitleUpdate = "UPDATE srr.student_resume SET title='" + cleanMySqlInsert(this.title) + "' WHERE resumeID=" + this.resumeID;
+        String sqlSummaryUpdate = "UPDATE srr.summary SET objective='" + cleanMySqlInsert(this.objective) + "',  experience='"
+                + cleanMySqlInsert(this.experience) + "', accomplishments='" + cleanMySqlInsert(this.accomplishments) + "'"
+                + " WHERE resumeID=" + this.resumeID;
+
+        //resume must already exist
+        if (this.resumeID == null) {
+            return false;
+        }
+      
+        try {
+            this.db = new DbUtilities();
+            rs = db.executeQuery(sqlTitleUpdate);
+            rs = db.executeQuery(sqlSummaryUpdate);
+
+            //skills insert..................
+            if (this.skillsList != null) {
+                for (Skill skill : this.skillsList) {
+                    if (skill.getSkillID() == null) {
+                        skill.commitToDb(this.resumeID);
+                    }
+                }
+            } else {
+                System.out.println("The skills list is null!");
+            }
+            //Experience insert..................
+            if (this.experienceList != null) {
+                for (Experience exp : this.experienceList) {
+                    if (exp.getExperienceID() == null) {
+                        exp.commitToDb(this.resumeID);
+                    }
+                }
+            } else {
+                System.out.println("The experience list is null!");
+            }
+            success = true;
+        } catch (SQLException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        } finally {
+            db.releaseConnection();
+        }
+        return success;
+
+    }
+
+    public void addSkill(String skillText) {
+        if (this.skillsList == null) {
+            this.skillsList = new ArrayList<>();
+        }
+        this.skillsList.add(new Skill(skillText));
+    }
+
+    public void addExperience(Experience experience) {
+        if (this.experienceList == null) {
+            this.experienceList = new ArrayList<>();
+        }
+        this.experienceList.add(experience);
+    }
+
+    public boolean isCommitted() {
+        if (this.resumeID == null) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Helper method to remove records associated with a resume in order to
+     * update it with new ones
+     *
+     * @return
+     */
+    public boolean clearDBRelations() {
+        boolean success = false;
+
+        //first, skills....
+        try {
+            for (Skill skill : this.skillsList) {
+                skill.removeFromDb();
+            }
+//            //now experience
+//            for (Experience exp : this.experienceList) {
+//                exp.removeFromDb();
+//            }
+            success = true;
+        } catch (NullPointerException ex) {
+            System.out.println("Error while trying to remove skills and experiences from resume ID " + this.resumeID);
+        }
+
+        return success;
     }
 }

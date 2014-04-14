@@ -1,4 +1,9 @@
 
+<%@page import="java.util.Set"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.math.BigInteger"%>
+<%@page import="srr.model.Resume"%>
+<%@page import="srr.model.StudentAccount"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.HashMap"%>
@@ -38,16 +43,15 @@
                 <div id="logoDIV"><img src="img/logos/srr-banner.jpg" alt="School of Information Science Logo" /></div>
                 <div id="loginStatus">
                     <%
-                        //Protected page...confirm login...
-                        String userName = (String) session.getAttribute("userName");
-                        if (userName != null) {
-                            out.print("Logged in as " + userName);
+                        StudentAccount userAccount = (StudentAccount) session.getAttribute("StudentAccount");
+                        if (userAccount != null) {
+                            out.print("Logged in as " + userAccount.getUserName());
                             out.print(" | <a href='logout'>Logout</a>");
                         } else {
-                            //not logged in...
                             response.sendRedirect("login.jsp");
                         }
                     %>
+
                 </div>
             </div>
             <div class="clear"></div><!--important-->
@@ -100,24 +104,7 @@
                             }
                         }
                     %>
-                </div>
-                <table>
-                    <tr><th colspan="2">Your Resumes</th></tr>
-                    <tr><td colspan="2">                 <div id="divResumes">
-                                <%
-                                    out.println("Getting your resumes....");
-
-                                  out.println("call up the list of resumes");
-//                                    out.println("<ul id='resumeList'>");
-//                                    for (int i = 1; i <= 10; i++) {
-//                                        out.println("<li>");
-//                                        out.println("<a href='author?action=edit&resumeID=" + i + "'>Simulated [dataset] Resume #" + i + "</a>");
-//                                        out.println("</li>");
-//                                    }
-//                                    out.println("</ul>"); //end the list
-                                %>
-                            </div></td></tr>
-                </table>
+                </div>                                         
                 <form id="frmAuthor" name="frmAuthor" action="author?action=create" method="post">
                     <table>
                         <tr>
@@ -126,6 +113,52 @@
                         </tr>
                     </table>
                 </form>
+                <table>
+                    <tr><th colspan="2"><h2 class="page-sub-title">Your Resumes</h2></th></tr>
+                    <tr><td colspan="2">                 <div id="divResumes">
+                                <%
+                                    out.println("<ul id='resumeList'>");
+                                    HashMap list = userAccount.getResumeList();
+                                    BigInteger tempID;
+                                    String tempTitle;
+
+                                    try {
+                                        if (list != null) {
+                                            System.out.print("manage.jsp Resume LIST SIZE: " + list.size());
+                                            //borrowed from http://www.tutorialspoint.com/java/java_hashmap_class.htm
+                                            // Get a set of the entries
+                                            Set set = list.entrySet();
+                                            System.out.println("point A");
+                                            // Get an iterator
+                                            Iterator i = set.iterator();
+                                            System.out.println("point B");
+                                            // Display elements
+                                            out.println("<ul class='resume-list'>");
+                                            while (i.hasNext()) {
+                                                Map.Entry me = (Map.Entry) i.next();
+                                                tempID = (BigInteger) me.getKey();
+                                                tempTitle = (String) me.getValue();
+                                                System.out.println("point D: " + tempTitle);
+                                                out.println("<li>");
+                                                out.println("<a href='view?resumeID=" + tempID.toString() + "'>" + tempTitle + "</a>");
+                                                out.println("<a href='edit?action=edit&resumeID=" + tempID.toString() + "'><button>Edit</button></a>");
+                                                out.println("</li>");
+                                            }
+                                            //end borrowed code
+                                            out.println("</ul>"); //end the list
+                                            session.setAttribute("ResumeList", list); //save the entire list to the db
+
+                                        }
+
+                                    } catch (NullPointerException ex) {
+                                        System.out.println("error trying to gen list of resumes: " + ex.getStackTrace());
+                                    }
+
+
+                                %>
+                            </div></td></tr>
+                </table>
+
             </div>
             <div class="clear"></div><!--important-->
             <div id="footer">

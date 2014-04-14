@@ -151,18 +151,24 @@ img {
     padding: 10px;
     font-size: 16px;
 }
-
+table {
+    padding: 6px 10px;
+    width: 100%;
+    margin: 3px;
+}
 #frmLogin table td:first-child, #frmRegister table td:first-child {
-    padding: 4px;
+    padding: 6px;
     text-align: right;
 }
 
 #frmLogin table, #frmRegister table {
     background-color: #BBBEBC;
+    padding: 6px;
 }
 
-#frmAuthor table {
+#frmEdit div {
     background-color: #E8E594;
+    padding: 6px;
 }
 
 #frmLogin table td, th, #frmRegister table td, th {
@@ -184,14 +190,32 @@ img {
     text-decoration: underline;
 }
 #errorDIV ul{list-style-image:url('../img/x.gif');
-margin: 0 15px; }
+             margin: 0 15px; }
 #errorDIV ul li {
     padding-left: 4px;
 }
+/* SUCCESS div */
+#successDIV {
+    text-align: left;
+    color: green;
+    font-weight: bold;
+    font-size: 1.2em;
+    width: 500px;
+    margin-left: 100px;
+    padding: 10px;
+}
+#successDIV ul {
+    list-style-image:url('../img/check.png');
+    margin: 0 15px;
+
+}
+#successDIV ul li {
+    padding-left: 4px;
+}
 input[type="text"], input[type="password"], input[type="email"], input[type="tel"], select {
-    font-size: 14px;
-    width: 300px;
-    height: 20px;
+    font-size: 1em;
+    width: 500px;
+    height: 32px;
     background-color: #C3DAC9;
     color: #000;
 }
@@ -207,7 +231,8 @@ input[type="submit"] {
     float: right;
     width: 150px;
     height: 40px;
-    padding: 6px;
+    padding: 4px;
+    margin: 4px;
     font-size: 1em;
     font-weight: bold;
     background-color: #0D38FF;
@@ -218,6 +243,21 @@ input[type="submit"] {
 input[type="submit"]:hover {
     border: 2px inset #000;
     color: #FFF;
+}
+input[type="button"] {
+        float: right;
+    width: 110px;
+    height: 30px;
+    padding: 4px;
+    font-size: 0.9em;
+    font-weight: bold;
+    border: 2px outset #000;
+    color: green;
+    background: buttonface;
+}
+input[type="button"]:hover {
+    border: 2px inset #000;
+     color: greenyellow;
 }
 
 textarea {
@@ -388,11 +428,11 @@ a:active { /* Active Links */
 .hidden {
     visibility: hidden;
     display: none;
-    
+
 }
 .shown {
     visibility: visible;
-    
+
 }
 /*END Miscellaneous Classes */
 /**Begin resume browsing styles*/
@@ -405,13 +445,11 @@ a:active { /* Active Links */
     text-align: left;
 }
 #resume-gallery .name {
-    height: 18px;
     display: block;
     text-align: center;
     font-weight: bold;
-    margin: 3px;
-    padding: 0.4em;
-    font-size: 1.4em; 
+    padding: 4px;
+    font-size: 1.2em; 
 }
 #resume-gallery  .resume-summary {
     font-style: italic;
