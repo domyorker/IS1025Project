@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package srr.rest;
 
@@ -63,8 +58,7 @@ public class getGradeLevels extends HttpServlet {
                 //now output the json array
                 out.print(levels);
             } catch (SQLException | JSONException ex) {
-                Logger.getLogger(getStates.class.getName()).log(Level.SEVERE, null, ex);
-                System.out.print("Error: " + ex.getMessage()); //***********************
+                System.out.print("Error in getGradeLevels.java: " + ex.getMessage()); //need error logging
             } finally {
                 db.releaseConnection();
             }

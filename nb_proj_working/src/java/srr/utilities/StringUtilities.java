@@ -56,6 +56,9 @@ public class StringUtilities {
      * @return String with dangerous characters escaped or replaced
      */
     public static String cleanMySqlInsert(String data) {
+        if (data.isEmpty()) {
+            return "";
+        }
         String cleanData = data.replace("  ", " ");
         //cleanData = cleanData.replace("\\", "\\\\");
         cleanData = cleanData.replace("'", "\\'");
@@ -75,7 +78,7 @@ public class StringUtilities {
 
             byte byteData[] = md.digest();
 
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             for (int i = 0; i < byteData.length; i++) {
                 sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
             }
@@ -111,28 +114,62 @@ public class StringUtilities {
      * A helper method to properly format a date b4 submission to MySql
      *
      * @param date The date to format
-     * @return A formatted DATETIME String
+     * @return A formatted Date String as ("yyyy-MM-dd")
      */
-    public static String getFormattedDateTime(Date date) {
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public static String getFormattedDate(Date date) {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         return df.format(date);
     }
 
     /**
-     * A helper method to parse date strings to Date
+     * A helper method to parse date strings to MySql-formatted Dates
      *
-     * @param strDate the date as a string
-     * @return The string converted into a Date object
+     * @param strDate the date as a string in the format yyyy-MM-dd
+     * @return The string converted into a Date object in the format yyyy-MM-dd
+     * @throws java.text.ParseException
      */
-    public static Date parseStringToDate(String strDate) {
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = null;
-        try {
-            date = df.parse(strDate);
-        } catch (ParseException ex) {
-            Logger.getLogger(StringUtilities.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public static Date parseStringToMySqlDate(String strDate) throws ParseException {
+        SimpleDateFormat readFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return readFormat.parse(strDate);
+    }
 
-        return date;
+    /**
+     * A helper method to parse date strings to MySql-formatted Dates
+     *
+     * @param strDate the date as a string in the format MM/dd/yyyy
+     * @return The string converted into a Date object
+     * @throws java.text.ParseException
+     */
+    public static String parseDateString(String strDate) throws ParseException {
+        if (strDate.isEmpty()) {
+            return "";
+        }
+        SimpleDateFormat readFormat = new SimpleDateFormat("MM/dd/yyyy"); //input from web page
+        SimpleDateFormat writeFormat = new SimpleDateFormat("yyyy-MM-dd"); //output for MySql
+
+        Date date;
+        String formattedDate = "";
+
+        date = readFormat.parse(strDate);
+        if (date != null) {
+            formattedDate = writeFormat.format(date);
+        }
+        return formattedDate;
+    }
+    public static String parseMySqlDateString(String strDate) throws ParseException {
+        if (strDate.isEmpty()) {
+            return "";
+        }
+        SimpleDateFormat writeFormat = new SimpleDateFormat("MM/dd/yyyy"); //input from web page
+        SimpleDateFormat readFormat = new SimpleDateFormat("yyyy-MM-dd"); //output for MySql
+
+        Date date;
+        String formattedDate = "";
+
+        date = readFormat.parse(strDate);
+        if (date != null) {
+            formattedDate = writeFormat.format(date);
+        }
+        return formattedDate;
     }
 }

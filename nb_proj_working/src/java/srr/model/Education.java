@@ -64,6 +64,25 @@ public class Education {
         }
 
     }
+    public String getInstitution(){
+        return this.institution;
+    }
+    
+    public int getGraduationMonth(){
+        return this.graduationMonth;
+    }
+    
+    public int getGraduationYear(){
+        return this.graduationYear;
+    }
+    
+    public String getDegree(){
+        return this.nameOfDegree;
+    }
+    
+    public String getCity(){
+        return this.city;
+    }
 
     /**
      * A method to return this Education object as JSON

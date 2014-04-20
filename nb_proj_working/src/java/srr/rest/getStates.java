@@ -61,7 +61,7 @@ public class getStates extends HttpServlet {
                 out.print(states);
             } catch (SQLException | JSONException ex) {
                 Logger.getLogger(getStates.class.getName()).log(Level.SEVERE, null, ex);
-                System.out.print("Error: " + ex.getMessage()); //****************************
+                System.out.print("Error in getStates.java: " + ex.getMessage()); //***
             } finally {
                 db.releaseConnection();
             }

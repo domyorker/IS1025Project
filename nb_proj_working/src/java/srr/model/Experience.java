@@ -3,12 +3,13 @@ package srr.model;
 import java.math.BigInteger;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
-import java.util.UUID;
+import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import srr.utilities.DbUtilities;
 import static srr.utilities.StringUtilities.cleanMySqlInsert;
+import static srr.utilities.StringUtilities.parseDateString;
+import static srr.utilities.StringUtilities.parseMySqlDateString;
 
 /**
  *
@@ -17,11 +18,9 @@ import static srr.utilities.StringUtilities.cleanMySqlInsert;
 public class Experience {
 
     private BigInteger experienceID;
-    private String employer;
-    private String jobTitle;
-    private Date startDate;
-    private boolean presentJob;
-    private Date endDate;
+    private String employer, jobTitle, startDate = ""; //working with dates in java sucks!
+    private int presentJob;
+    private String endDate = ""; //I'm sticking with strings!
     private String summary;
     DbUtilities db;
 
@@ -44,9 +43,9 @@ public class Experience {
      * @param present Boolean to indicate if this job is the present job
      * @param summary A summary of responsibilities
      */
-    public Experience(String emp, String jobTitle, Date startDate, boolean present, Date endDate, String summary) {
-        this.employer = emp;
+    public Experience(String jobTitle, String emp, String startDate, int present, String endDate, String summary) {
         this.jobTitle = jobTitle;
+        this.employer = emp;
         this.startDate = startDate;
         this.presentJob = present;
         this.endDate = endDate;
@@ -68,15 +67,26 @@ public class Experience {
             while (rs.next()) {
                 this.experienceID = BigInteger.valueOf(rs.getLong("experienceID"));
                 this.employer = rs.getString("employer");// exployer in db?
-                this.startDate = rs.getDate("startDate");
+                this.startDate = rs.getString("startDate");
+                if (!this.startDate.isEmpty()) {
+                    this.startDate = parseMySqlDateString(this.startDate); //convert to MM/dd/yyyy format
+                }
                 this.jobTitle = rs.getString("jobTitle");
-                this.endDate = rs.getDate("endDate");
-                this.presentJob = rs.getBoolean("presentJob");
+                this.endDate = rs.getString("endDate");
+//                if (!this.endDate.isEmpty()) {
+//                    System.out.println("End date not emppty");
+//                    //    this.endDate = parseMySqlDateString(this.endDate); //convert to MM/dd/yyyy format
+//                }
+                if (this.endDate != null) {
+                    System.out.println("End date not null");
+                    //    this.endDate = parseMySqlDateString(this.endDate); //convert to MM/dd/yyyy format
+                }
+                this.presentJob = rs.getInt("presentJob");
                 this.summary = rs.getString("summary");
             }
 
-        } catch (SQLException ex) {
-            Logger.getLogger(Experience.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException | ParseException ex) {
+            System.out.println("Error while trying to laod the resume experience: " + ex.getMessage());
         } finally {
             db.releaseConnection();
         }
@@ -101,13 +111,28 @@ public class Experience {
             return false;
         }
         ResultSet rs;
-        String sql;
-        sql = "INSERT INTO srr.experience VALUES (NULL, '" + cleanMySqlInsert(this.employer) + "', '" + cleanMySqlInsert(this.jobTitle) + "', '";
-        sql += this.startDate + "', '" + this.presentJob + "', '" + this.endDate + "', '";
-        sql += cleanMySqlInsert(this.summary) + "');";
+        String sql, sqlStartDate, sqlEndDate;
+
         db = new DbUtilities();
 
         try {
+            if (this.startDate == null || this.startDate.isEmpty()) {
+                return false; //startDate is required
+            } else {
+                sqlStartDate = "'" + parseDateString(this.startDate) + "'";
+            }
+            if (this.presentJob == 0) { // 0 = not present job
+                if (this.endDate == null || this.endDate.isEmpty()) {
+                    sqlEndDate = "NULL";
+                } else {
+                    sqlEndDate = "'" + parseDateString(this.endDate) + "'";
+                }
+            } else {
+                sqlEndDate = "NULL";
+            }
+            sql = "INSERT INTO srr.experience VALUES (NULL, '" + cleanMySqlInsert(this.employer) + "', '" + cleanMySqlInsert(this.jobTitle) + "', "
+                    + sqlStartDate + ", " + this.presentJob + ", " + sqlEndDate + ", '" + cleanMySqlInsert(this.summary) + "');";
+            System.out.println(sql);
             rs = db.executeQuery(sql);
             if (rs.next()) {
                 this.experienceID = BigInteger.valueOf(rs.getLong(1));
@@ -116,7 +141,7 @@ public class Experience {
             rs = db.executeQuery(sql);
             rs = null;
             success = true;
-        } catch (SQLException ex) {
+        } catch (SQLException | ParseException ex) {
             System.out.print("ERROR IN EXPERIENCE!" + ex.getMessage());
         } finally {
             db.releaseConnection();
@@ -175,14 +200,17 @@ public class Experience {
     /**
      * @return the startDate
      */
-    public Date getStartDate() {
+    public String getStartDate() {
+        if (startDate == null || startDate.isEmpty()) {
+            return "";
+        }
         return startDate;
     }
 
     /**
      * @param startDate the startDate to set
      */
-    public void setStartDate(Date startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
@@ -190,27 +218,33 @@ public class Experience {
      * @return the presentJob
      */
     public boolean isPresentJob() {
-        return presentJob;
+        if (this.presentJob == 1) {
+            return true;
+        }
+        return false;
     }
 
     /**
      * @param presentJob the presentJob to set
      */
-    public void setPresentJob(boolean presentJob) {
+    public void setPresentJob(int presentJob) {
         this.presentJob = presentJob;
     }
 
     /**
      * @return the endDate
      */
-    public Date getEndDate() {
+    public String getEndDate() {
+        if (endDate == null || endDate.isEmpty()) {
+            return "";
+        }
         return endDate;
     }
 
     /**
      * @param endDate the endDate to set
      */
-    public void setEndDate(Date endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 
@@ -238,12 +272,13 @@ public class Experience {
         if (this.experienceID == null) {
             return false;
         }
-        String sql = "DELETE FROM srr.experience WHERE experienceID=" + this.experienceID;
-        System.out.println("About to remove this EXPERIENCE from the db: " + this.experienceID);
+        String sqlRes_Exp = "DELETE FROM srr.resume_experience WHERE experienceID=" + this.experienceID;
+        String sqlExp = "DELETE FROM srr.experience WHERE experienceID=" + this.experienceID;
 
         try {
             db = new DbUtilities();
-            db.executeQuery(sql);
+            db.executeQuery(sqlRes_Exp);
+            db.executeQuery(sqlExp);
             success = true;
         } catch (SQLException ex) {
             System.out.println("Error while trying to remove experience: " + this.experienceID);

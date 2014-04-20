@@ -90,8 +90,7 @@ public class Skill {
 
         }
         sql = "INSERT INTO srr.skill VALUES(NULL,'" + cleanMySqlInsert(this.name) + "');";
-        System.out.print("THE SQL for and from skill: " + sql);
-
+       
         try {
             db = new DbUtilities();
             rs = db.executeQuery(sql);
@@ -101,12 +100,10 @@ public class Skill {
             //now link the resume to this skill
             sql = "INSERT INTO srr.resume_skill "
                     + " VALUES (" + resumeID + ", " + this.skillID + ");";
-            System.out.print("the sql for resume_skill: " + sql);
-            rs = db.executeQuery(sql);
+             rs = db.executeQuery(sql);
             rs = null;
             success = true;
         } catch (SQLException ex) {
-            System.out.println("The sql string: " + sql); //*****************
             System.out.println("Error: " + ex.getMessage());
         } finally {
             db.releaseConnection();
@@ -150,8 +147,7 @@ public class Skill {
 
         String sqlResumeSkill = "DELETE FROM srr.resume_skill WHERE skillID=" + this.skillID;
         String sqlSkill = "DELETE FROM srr.skill WHERE skillID=" + this.skillID;
-        System.out.println("About to remove this skill from the db: " + this.getSkillID());
-
+     
         try {
             db = new DbUtilities();
             //first we delete the lookup table since it points to skills

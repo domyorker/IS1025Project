@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import srr.utilities.DbUtilities;
-import static srr.utilities.StringUtilities.parseStringToDate;
+
 
 /**
  * A class to represent a certification
@@ -19,7 +19,7 @@ public class Certification {
     private BigInteger certificationID;
     private String name;
     private String institution;
-    private Date dateAttained;
+    private String dateAttained;
     private String summary;
     DbUtilities db;
 
@@ -53,7 +53,7 @@ public class Certification {
         this.institution = inst;
     }
 
-    public void setDateAttained(Date date) {
+    public void setDateAttained(String date) {
         this.dateAttained = date;
     }
 
@@ -74,7 +74,7 @@ public class Certification {
         return this.institution;
     }
 
-    public Date getDateAttained() {
+    public String getDateAttained() {
         return this.dateAttained;
     }
 
@@ -99,7 +99,7 @@ public class Certification {
             while (rs.next()) {
                 this.name = rs.getString("name");
                 this.institution = rs.getString("institution");
-                this.dateAttained = parseStringToDate(rs.getString("dateAttained"));
+                this.dateAttained = rs.getString("dateAttained");
                 this.summary = rs.getString("summary");
             }
         } catch (SQLException ex) {

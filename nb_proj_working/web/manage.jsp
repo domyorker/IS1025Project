@@ -48,7 +48,8 @@
                             out.print("Logged in as " + userAccount.getUserName());
                             out.print(" | <a href='logout'>Logout</a>");
                         } else {
-                            response.sendRedirect("login.jsp");
+                            response.sendRedirect(response.encodeRedirectURL("login.jsp"));
+                            return;
                         }
                     %>
 
@@ -105,7 +106,7 @@
                         }
                     %>
                 </div>                                         
-                <form id="frmAuthor" name="frmAuthor" action="author?action=create" method="post">
+                <form id="frmAuthor" name="frmAuthor" action="edit?action=create" method="post">
                     <table>
                         <tr>
                             <td><input type="text" id="txtResumeName" name="txtResumeName"/></td>
@@ -124,21 +125,17 @@
 
                                     try {
                                         if (list != null) {
-                                            System.out.print("manage.jsp Resume LIST SIZE: " + list.size());
                                             //borrowed from http://www.tutorialspoint.com/java/java_hashmap_class.htm
                                             // Get a set of the entries
                                             Set set = list.entrySet();
-                                            System.out.println("point A");
                                             // Get an iterator
                                             Iterator i = set.iterator();
-                                            System.out.println("point B");
                                             // Display elements
                                             out.println("<ul class='resume-list'>");
                                             while (i.hasNext()) {
                                                 Map.Entry me = (Map.Entry) i.next();
                                                 tempID = (BigInteger) me.getKey();
                                                 tempTitle = (String) me.getValue();
-                                                System.out.println("point D: " + tempTitle);
                                                 out.println("<li>");
                                                 out.println("<a href='view?resumeID=" + tempID.toString() + "'>" + tempTitle + "</a>");
                                                 out.println("<a href='edit?action=edit&resumeID=" + tempID.toString() + "'><button>Edit</button></a>");
@@ -151,10 +148,8 @@
                                         }
 
                                     } catch (NullPointerException ex) {
-                                        System.out.println("error trying to gen list of resumes: " + ex.getStackTrace());
+                                        System.out.println("Error trying to generate the list of resumes: " + ex.getMessage());
                                     }
-
-
                                 %>
                             </div></td></tr>
                 </table>

@@ -2,11 +2,15 @@ package srr.core;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigInteger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import srr.model.Resume;
+import srr.model.StudentAccount;
 
 /**
  * A servlet that will handle the display of resumes
@@ -28,16 +32,12 @@ public class view extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet view</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>About to view Resume: " + request.getParameter("resumeID") + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            String resumeID = request.getParameter("resumeID");
+            String studentID = request.getParameter("studentID");
+            HttpSession session = request.getSession(true);
+            Resume resume = new Resume(new BigInteger(resumeID));
+            session.setAttribute("resume", resume);
+            response.sendRedirect("view.jsp");
         }
     }
 

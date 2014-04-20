@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -52,25 +51,50 @@ public class edit extends HttpServlet {
             if (session.isNew()) {
                 redir = response.encodeRedirectURL("login.jsp?error=true");
                 errorList = "<li>You must log in to edit resumes. Please log in.</li>";
-            } else if (resume == null) {
-                redir = response.encodeRedirectURL("manage.jsp?error=true");
-                errorList = "<li>A resume was not found. Please select or create the resume you wish to work with.</li>";
             }
 
 //Now for the action...
             String action = request.getParameter("action");
             switch (action) {
+                case "create": //request to create a new resume 
+                    //grab resume title and student studentAccount
+                    String title = request.getParameter("txtResumeName");
+                    studentAccount = (StudentAccount) session.getAttribute("StudentAccount");
+                    if (title.isEmpty()) {
+                        errorList += "<li>Please enter a title for the resume.</li>";
+                        redir = response.encodeRedirectURL("manage.jsp?error=true");
+                    }
+
+                    if (errorList.isEmpty()) { //NO errors present
+                        try {
+                            resume = new Resume(studentAccount.getStudentID(), title); //create the resume
+                            session.setAttribute("Resume", resume); //put it in session
+                            //now save
+                            resume.createToDb(studentAccount);
+                            redir = response.encodeRedirectURL("edit.jsp");
+                        } catch (NullPointerException ex) {
+                            errorList += "<li>An error occured while attempting to create your resume. Please try again.</li>";
+                            redir = response.encodeRedirectURL("manage.jsp?error=true");
+                            System.out.println("error in create (edit.java) while creating resume: " + ex.getMessage());
+                        }
+
+                    }
+                    if (!errorList.isEmpty()) { //errors present
+                        session.setAttribute("errorList", "<ul>" + errorList + "</ul>");
+                    } else {//important...put the new object in session
+                        session.setAttribute("Resume", resume);
+                        success = true; //important
+                    }
+                    break;
                 case "save": //save the resume
                     if (resume == null) {
                         break; //exit
                     }
 
-                    tempResume = new Resume(studentAccount.getStudentID(), request.getParameter("txtResumeName"));
-                    System.out.println("THE TITLE: " + request.getParameter("txtResumeName"));
+                    tempResume = new Resume(request.getParameter("txtResumeName")); //(studentAccount.getStudentID(), );
                     tempResume.setObjective(request.getParameter("txtObjective"));
                     tempResume.setExperience(request.getParameter("txtExperience"));
                     tempResume.setAccomplishments(request.getParameter("txtAccomplishments"));
-
                     //grab the skills   
                     ArrayList<Skill> newSkillList = new ArrayList<>();
                     for (int i = 1; i <= 10; i++) {
@@ -82,20 +106,30 @@ public class edit extends HttpServlet {
                         tempResume.setSkillsList(newSkillList);
                     } //end for
 
-                    //grab the work experience
+                    //************** Grab the work experience
                     Experience tempExperience;
-                    String employer;
-                    String jobTitle;
-                    Date startDate;
-                    boolean presentJob;
-                    Date endDate;
-                    String summary;
+                    String employer,
+                     jobTitle,
+                     startDate,
+                     endDate = "",
+                     jobSummary;
+                    int presentJob = 0;
+
                     for (int i = 1; i <= 5; i++) {
-                        if (!request.getParameter("txtJobTitle" + i).isEmpty()) {
-                            employer = request.getParameter("txtJobTitle" + i);
-                            System.out.println("txtStartDate: " + i + request.getParameter("txtStartDate" + i));
-                            tempExperience = new Experience();
-                            tempResume.addExperience(new Experience());
+                        jobTitle = request.getParameter("txtJobTitle" + i);
+                        employer = request.getParameter("txtEmployer" + i);
+                        startDate = request.getParameter("txtStartDate" + i);
+                        jobSummary = request.getParameter("txtJobSummary" + i);
+
+                        if (request.getParameter("radioPresentJob" + i).equals("Yes")) {
+                            presentJob = 1;
+                        } else {
+                            endDate = request.getParameter("txtEndDate" + i);
+                        }
+
+                        if (!jobTitle.isEmpty()) {
+                            tempExperience = new Experience(jobTitle, employer, startDate, presentJob, endDate, jobSummary);
+                            tempResume.addExperience(tempExperience);
                         } else {
                             break;
                         }
@@ -104,11 +138,14 @@ public class edit extends HttpServlet {
                     session.setAttribute("Resume", tempResume); //time to save our work
                     //create for the first time?
                     if (resume.getResumeID() == null) {
-                        success = tempResume.commitToDb(studentAccount);
+                        success = tempResume.createToDb(studentAccount);
+
                     } else { //existing
                         //important: delete all records related to this resume...we are starting fresh...
                         resume.clearDBRelations();
+
                         tempResume.setResumeID(resume.getResumeID()); //swap the ID before updating
+
                         success = tempResume.update();
                     }//end !resume.isCommited()
 
@@ -116,19 +153,16 @@ public class edit extends HttpServlet {
 
                 case "edit":
                     String theID = request.getParameter("resumeID");
-                    System.out.print("Edit.java the ID: " + theID);
                     if (theID != null && !theID.isEmpty()) {
 
                         tempResume = new Resume(new BigInteger(theID));
                         if (tempResume != null) {
                             session.setAttribute("Resume", tempResume);
                             success = true;
-
                             redir = response.encodeRedirectURL("edit.jsp");
                         } else {
                             errorList = "<li>An error occured while trying to grab resume with ID" + theID + ".</li>";
                             redir = response.encodeRedirectURL("edit.jsp?error=true");
-                            System.out.println("error in edit");
                         }
                     }
                     break;
@@ -136,7 +170,7 @@ public class edit extends HttpServlet {
                     break;
             }
         } catch (NullPointerException ex) {
-            System.out.println("Error in edit.jsp: " + ex.getMessage());
+            System.out.println("Error in edit.java: " + ex.getMessage() + "\n" + Arrays.toString(ex.getStackTrace()));
         }
         if (!success) {
             errorList = "<li>An error has occured while attempting to save your resume. Please try again.</li>";
@@ -151,7 +185,6 @@ public class edit extends HttpServlet {
             session.setAttribute("successMsg", "<ul>" + successMsg + "</ul>");
         }
 
-        System.out.println("redir:  " + redir);
         response.sendRedirect(redir);
 
     }

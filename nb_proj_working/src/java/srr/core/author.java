@@ -86,23 +86,6 @@ public class author extends HttpServlet {
                     response.sendRedirect(redir);
                     break;
             }
-////
-//               
-//                case "edit":
-//                    //get the resume's id
-//                    String resumeID = request.getParameter("resumeID");
-//                    if (resumeID != null && !resumeID.isEmpty()) {
-//                        //request data from resume object and put it in session
-//                        resume = new Resume();
-//                        resume.loadFromString(resumeID);
-//                        session.setAttribute("Resume", resume);
-//                    }
-//
-//                    //redirect to author[ing] page
-//                    redir = response.encodeRedirectURL("author.jsp");
-//                    response.sendRedirect(redir);
-//                default:
-//                    break;
 
         } catch (IOException ex) {
             System.out.println("exception in author.java" + ex.getMessage());

@@ -38,7 +38,7 @@
                         </a>
                     </li>
                     <li id="navAuthorLink">
-                        <a href="author.jsp">
+                        <a href="manage.jsp">
                             Manage Resumes
                         </a>
                     </li>

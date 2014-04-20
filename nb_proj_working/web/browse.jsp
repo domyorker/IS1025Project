@@ -1,7 +1,7 @@
 <%-- 
     Document   : browse
     Created on : Mar 29, 2014, 5:39:22 PM
-    Author     : Sean Carney
+    Author     : Jose Marte
 --%>
 
 <%@page import="java.math.BigInteger"%>
@@ -17,19 +17,7 @@
         <link rel="stylesheet" href="css/jquery-ui.css" type="text/css" />
         <script language="JavaScript" src="js/jquery-2.1.0.min.js"></script>
         <script language="JavaScript" src="js/jquery-ui.min.js"></script>
-        <script>
-            $(function() {
-                $(" #resume-gallery").selectable({
-                    stop: function(event, ui) {
-                        $(event.target).children('.ui-selected').not(':first').removeClass('ui-selected');
-                    },
-                    selected: function(event, ui) {
-                        var resumeId = $(".ui-selected").attr("id");
-                        alert("When implemented, I will fetch resume with ID: " + resumeId);
-                    }
-                });
-            });
-        </script>
+
     </head>
     <body>
         <div id="wrapper">
@@ -105,17 +93,13 @@
                         lastName = rs.getString("lName");
                         firstName = rs.getString("fName");
                         objective = rs.getString("objective");
-                        out.println("<div class = 'ui-widget-content' id='" + resumeID + "'>");
+                        out.println("<a href='view?resumeID=" + resumeID + "'><div class = 'ui-widget-content' id='" + resumeID + "'>");
                         out.println("<span class='name'>" + lastName + ", " + firstName + "</span>");
                         out.println("<span class='resume-summary' >" + objective + "</span>");
-                        out.println("</div>");
-                        /*
-                        out.print("<select>");
-                        //build the items...name of resume 
-                        */
+                        out.println("</div></a>");
                     }
-
-                   %>         
+                    %>
+        
                 </div>
                 <div class="clear"></div><!--important-->
             </div>

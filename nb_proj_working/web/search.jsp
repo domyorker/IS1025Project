@@ -4,6 +4,10 @@
     Author     : Jose Marte
 --%>
 
+<%@page import="java.util.Map"%>
+<%@page import="java.util.Iterator"%>
+<%@page import="java.util.Set"%>
+<%@page import="java.util.HashMap"%>
 <%@page import="srr.model.StudentAccount"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -67,17 +71,55 @@
                 </ul>
             </div>
             <div id="main">
+                <div id="errorDIV">
+                    <% //check for the existence of errors if this is a redirect
+                        String isErrorRedirect = request.getParameter("error");
+                        if (isErrorRedirect != null && isErrorRedirect.equals("true")) {
+                            String msg = (String) session.getAttribute("errorList");
+                            out.println(msg);
+                        }
+                    %>
+                </div> <!-- end error div-->
                 <h1 class="page-title">
                     Search Resume Repository
                 </h1>
-                <form id="frmSearch" name="frmSearch" action="search" method="post">
+                <form id="frmSearch" name="frmSearch" action="searchws" method="get">
                     <table>
                         <tr>
-                            <td><input type="text" name="txtSearchQuery" id="txtSearchQuery" placeholder="[ search query ]" /></td>
+                            <td><input type="text" name="key" id="txtSearchQuery" placeholder="[ search query ]" /></td>
                             <td><input type="submit" id="btnSubmit" name="bntSubmit" value="Search" /></td>
                         </tr>
                     </table>
                 </form>
+                <div id="searchResultsDIV">
+                    <%
+                        HashMap results;
+                        try {
+                            results = (HashMap) session.getAttribute("matchedResults");
+                            if (results != null) {
+                                    //borrowed from http://www.tutorialspoint.com/java/java_hashmap_class.htm
+                                // Get a set of the entries
+                                Set set = results.entrySet();
+                                // Get an iterator
+                                Iterator i = set.iterator();
+                                // Display elements
+                                out.println("<ul class='search-results-list'>");
+                                while (i.hasNext()) {
+                                    Map.Entry me = (Map.Entry) i.next();
+
+                                    out.println("<li>");
+                                    out.println("<a href='view?resumeID=" + me.getKey().toString() + "'>" + me.getValue() + "</a>");
+                                    out.println("</li>");
+                                }
+                                //end borrowed code
+                                out.println("</ul>"); //end the list
+                            }
+
+                        } catch (NullPointerException ex) {
+                            System.out.println("Error trying to regenerate the serach results list: " + ex.getMessage());
+                        }
+                    %>
+                </div>
 
                 <div class="clear"></div><!--important-->
             </div>

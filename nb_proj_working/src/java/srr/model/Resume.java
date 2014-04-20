@@ -19,12 +19,8 @@ import static srr.utilities.StringUtilities.encodePassword;
  */
 public class Resume {
 
-    private BigInteger resumeID = null; //AUTO_INCREMENT
-    private BigInteger userID;
-    private String title;
-    private String objective;
-    private String experience;
-    private String accomplishments;
+    private BigInteger userID, resumeID = null;
+    private String title, objective, experience, accomplishments;
 
     //list of related related objects
     private ArrayList<Certification> certificationsList;
@@ -101,22 +97,22 @@ public class Resume {
             return false;
         }
         boolean success = false;
-
+        System.out.println("in loadFromDb***********************************");
         db = new DbUtilities();
         try {
             rs = db.getResultSet("SELECT * FROM srr.student_resume WHERE resumeID ='" + this.resumeID + "'");
             //set the title
             if (rs.next()) {
                 this.setTitle(rs.getString("title"));
-            }
-
-            rs = db.getResultSet("SELECT * FROM srr.summary WHERE resumeID ='"
-                    + this.resumeID + "'");
-            if (rs.next()) {
                 this.setObjective(rs.getString("objective"));
                 this.setExperience(rs.getString("experience"));
                 this.setAccomplishments(rs.getString("accomplishments"));
             }
+            rs = db.getResultSet("SELECT userID FROM srr.student_resume WHERE resumeID ='" + this.resumeID + "';");
+            if (rs.next()) {
+                this.userID = new BigInteger(rs.getString("userID"));
+            }
+
             rs = db.getResultSet("SELECT * FROM srr.resume_skill WHERE resumeID ='"
                     + this.resumeID + "'");
             while (rs.next()) {
@@ -125,6 +121,15 @@ public class Resume {
                 }
                 this.skillsList.add(new Skill(BigInteger.valueOf(rs.getLong("skillID"))));
             }
+            // this.certificationsList = temp.getCertificationsFromDb(this.resumeID);
+            //  this.coursesList = temp.getCoursesFromDb(this.resumeID);
+          //  String id = String.valueOf(this.resumeID);
+            // this.membershipsList = temp.getMembershipsFromDb(id);
+            //  this.interestsList = temp.getInterestsFromDb(id);
+            System.out.println("about to call getExp...");
+            this.experienceList = getExperienceFromDb();
+            System.out.println("called getExperience...");
+            // this.educationList = temp.getEducationFromDb(this.userID);
             success = true;
         } catch (SQLException | NullPointerException ex) {
             System.out.println("Error while trying to load the resume: " + ex.getStackTrace());
@@ -151,7 +156,7 @@ public class Resume {
 
         String sql = "SELECT * FROM srr.resume_certification RC";
         sql += " LEFT JOIN srr.certification C ON RC.certificationID = C.certificationID";
-        sql += "WHERE  resumeID =" + resumeID + ";";
+        sql += " WHERE  resumeID =" + resumeID + ";";
 
         try {
             this.rs = db.getResultSet(sql);
@@ -185,14 +190,16 @@ public class Resume {
 
         String sql = "SELECT * FROM srr.resume_course RC";
         sql += " LEFT JOIN srr.course C ON RC.courseID = C.courseID";
-        sql += "WHERE  resumeID =" + resumeID + ";";
+        sql += " WHERE  resumeID =" + resumeID + ";";
 
         try {
             this.rs = db.getResultSet(sql);
 
             while (rs.next()) {
-                //tempCourse = new Course(BigInteger.valueOf(rs.getLong("courseID")));
-                // tempList.add(tempCourse);
+                long courseID = rs.getLong("courseID");
+                String ID = String.valueOf(courseID);
+                tempCourse = new Course(ID);
+                tempList.add(tempCourse);
             }
         } catch (SQLException ex) {
             Logger.getLogger(StudentAccount.class.getName()).log(Level.SEVERE, null, ex);
@@ -204,57 +211,137 @@ public class Resume {
         return tempList;
     }
 
+    private ArrayList<Education> getEducationFromDb(BigInteger userID) {
+        ArrayList<Education> tmpE = new ArrayList<>();
+        db = new DbUtilities();
+        try {
+            rs = db.getResultSet("Select * from srr.education join srr.student_education on"
+                    + " srr.education.educationID = srr.student_education.educationID"
+                    + " where srr.student_education.studentId = '" + userID + "';");
+            while (rs.next()) {
+                tmpE.add(new Education(rs.getString("educationID")));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Resume.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return tmpE;
+    }
+
+    private ArrayList<Membership> getMembershipsFromDb(String resumeID) {
+        db = new DbUtilities();
+        ArrayList<Membership> tmpList = new ArrayList<>();
+        try {
+            rs = db.getResultSet("Select * from srr.resume_membership join srr.membership on"
+                    + " srr.resume_membership.membershipID = srr.membership.membershipID "
+                    + " where srr.resume_membership.resumeID ='" + resumeID + "';");
+
+            while (rs.next()) {
+                String meID = rs.getString("membershipID");
+                Membership tmpMember = new Membership(meID);
+                tmpList.add(tmpMember);
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Resume.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            db.releaseConnection();
+        }
+
+        //this.membershipsList = tmpList;
+        return tmpList;
+
+    }
+
+    private ArrayList<Interest> getInterestsFromDb(String resumeID) {
+        db = new DbUtilities();
+        ArrayList<Interest> tmpList = new ArrayList<>();
+        try {
+            rs = db.getResultSet("Select * from srr.resume_interest join srr.interest on"
+                    + " srr.resume_interest.interestID = srr.interest.interestID "
+                    + " where srr.resume_interest.resumeID ='" + resumeID + "';");
+
+            while (rs.next()) {
+                String meID = rs.getString("interestID");
+                Interest tmpInterest = new Interest(meID);
+                tmpList.add(tmpInterest);
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Resume.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            db.releaseConnection();
+        }
+
+        //this.membershipsList = tmpList;
+        return tmpList;
+
+    }
+
+    /**
+     * A helper method to obtain the list of Experience from the DB
+     *
+     * @param resumeID
+     * @return An ArrayList of Experience objects
+     */
+    private ArrayList<Experience> getExperienceFromDb() {
+         System.out.println("in getExperience...." );
+        db = new DbUtilities();
+         Experience tempExperience;
+        ArrayList<Experience> tempList = null;
+        String sql = "SELECT experienceID FROM srr.resume_experience WHERE resumeID ='" + this.resumeID + "';";
+        System.out.println("select experience: " + sql);
+        try {
+            rs = db.getResultSet(sql);
+            while (rs.next()) {
+                if (tempList == null) {
+                    tempList = new ArrayList<>();
+                }
+                tempExperience = new Experience(BigInteger.valueOf(rs.getLong("experienceID")));
+                tempList.add(tempExperience);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error while trying to load the experience list (getExperienceFromDb()): " + ex.getMessage());
+        } finally {
+            db.releaseConnection();
+        }
+
+        //this.membershipsList = tmpList;
+        return tempList;
+    }
+
     /**
      * Commit for the first time
      *
      * @param account
      * @return
      */
-    public boolean commitToDb(StudentAccount account) {
-        boolean success = false;
+    public boolean createToDb(StudentAccount account) {
         String sql = "";
         ResultSet rs;
 
         if (this.resumeID != null) {
             return true; //already saved, must use update() to make changes
         }
-        sql = "INSERT INTO srr.student_resume (resumeID, userID, title) "
-                + "VALUES (NULL, " + account.getStudentID() + ", '" + this.title + "');";
+        sql = "INSERT INTO srr.student_resume (resumeID, userID, title) VALUES"
+                + "(NULL, " + account.getStudentID() + ", '" + cleanMySqlInsert(this.title) + "');";
 
         this.db = new DbUtilities();
         try {
             rs = db.executeQuery(sql);
             if (rs.next()) {//grab the generated ID
                 this.resumeID = BigInteger.valueOf(rs.getLong(1));
-                //NOW SAVE THE SKILLS
-                if (this.skillsList != null) {
-                    for (Skill skill : this.skillsList) {
-                        skill.commitToDb(this.resumeID);
-                    }
-                }
-                success = true;
             } else {
-                return success; //failed to commit to db
+                return false; //failed to commit to db
             }
 
         } catch (SQLException ex) {
             System.out.println("The sql string: " + sql); //*****************
             System.out.println("Error: " + ex.getMessage());
-        } // NOW FOR THE SUMMARY
-        sql = "INSERT INTO srr.summary VALUES(" + this.resumeID + ", '" + cleanMySqlInsert(this.objective) + "', '";
-        sql += cleanMySqlInsert(this.experience) + "', '" + cleanMySqlInsert(this.accomplishments) + "');";
-        this.db = new DbUtilities();
-        try {
-            rs = db.executeQuery(sql);
-            rs = null;
-            success = true;
-        } catch (SQLException ex) {
-            System.out.println("The sql string: " + sql); //*****************
-            System.out.println("Error: " + ex.getMessage());
-        } finally {
+        }
+        finally {
             db.releaseConnection();
         }
-        return success;
+        return true;
     }
 
     /**
@@ -356,7 +443,14 @@ public class Resume {
      * @return the certificationsList
      */
     public ArrayList<Certification> getCertificationsList() {
-        return certificationsList;
+        return this.certificationsList;
+    }
+
+    /**
+     * @return the certificationsList
+     */
+    public ArrayList<Experience> getExperienceList() {
+        return this.experienceList;
     }
 
     /**
@@ -440,7 +534,7 @@ public class Resume {
      * @return the skillsList
      */
     public ArrayList<Skill> getSkillsList() {
-        return this.skillsList;
+        return skillsList;
     }
 
     /**
@@ -457,23 +551,40 @@ public class Resume {
      */
     public boolean update() {
         boolean success = false;
-        ResultSet rs;
-        String sqlTitleUpdate = "UPDATE srr.student_resume SET title='" + cleanMySqlInsert(this.title) + "' WHERE resumeID=" + this.resumeID;
-        String sqlSummaryUpdate = "UPDATE srr.summary SET objective='" + cleanMySqlInsert(this.objective) + "',  experience='"
-                + cleanMySqlInsert(this.experience) + "', accomplishments='" + cleanMySqlInsert(this.accomplishments) + "'"
-                + " WHERE resumeID=" + this.resumeID;
+        String sqlResumeUpdate, sqlExperienceUpdate;
 
         //resume must already exist
         if (this.resumeID == null) {
             return false;
         }
-      
-        try {
-            this.db = new DbUtilities();
-            rs = db.executeQuery(sqlTitleUpdate);
-            rs = db.executeQuery(sqlSummaryUpdate);
 
-            //skills insert..................
+        //important: delete all records related to this resume...we are starting fresh...
+        if (!clearDBRelations()) {
+            return false; //stop here
+        }
+
+        sqlResumeUpdate = "UPDATE srr.student_resume SET title= '" + cleanMySqlInsert(this.title) + "', objective= '" + cleanMySqlInsert(this.objective)
+                + "', experience= '" + cleanMySqlInsert(this.experience) + "', accomplishments='" + cleanMySqlInsert(this.accomplishments) + "' WHERE resumeID=" + this.resumeID;
+
+        sqlExperienceUpdate = "";
+        //NOW SAVE THE SKILLS
+        if (this.skillsList != null) {
+            for (Skill skill : this.skillsList) {
+                skill.commitToDb(this.resumeID);
+            }
+        }
+        //NOW SAVE THE Experiece list
+        if (this.experienceList != null) {
+            for (Experience exp : this.experienceList) {
+                exp.commitToDb(this.resumeID);
+            }
+        }
+        this.db = new DbUtilities();
+        ResultSet rsTemp;
+        try {
+            rsTemp = db.executeQuery(sqlResumeUpdate);
+
+            //skills INSPECT..................
             if (this.skillsList != null) {
                 for (Skill skill : this.skillsList) {
                     if (skill.getSkillID() == null) {
@@ -482,16 +593,6 @@ public class Resume {
                 }
             } else {
                 System.out.println("The skills list is null!");
-            }
-            //Experience insert..................
-            if (this.experienceList != null) {
-                for (Experience exp : this.experienceList) {
-                    if (exp.getExperienceID() == null) {
-                        exp.commitToDb(this.resumeID);
-                    }
-                }
-            } else {
-                System.out.println("The experience list is null!");
             }
             success = true;
         } catch (SQLException ex) {
@@ -531,22 +632,25 @@ public class Resume {
      * @return
      */
     public boolean clearDBRelations() {
-        boolean success = false;
+        boolean success = true;
 
         //first, skills....
         try {
-            for (Skill skill : this.skillsList) {
-                skill.removeFromDb();
+            if (this.skillsList != null) {
+                for (Skill skill : this.skillsList) {
+                    skill.removeFromDb();
+                }
             }
-//            //now experience
-//            for (Experience exp : this.experienceList) {
-//                exp.removeFromDb();
-//            }
-            success = true;
         } catch (NullPointerException ex) {
-            System.out.println("Error while trying to remove skills and experiences from resume ID " + this.resumeID);
+            System.out.println("Error in clearDBRelations: " + ex.getMessage());
+            success = false;
         }
-
+        //now experience
+        if (this.experienceList != null) {
+            for (Experience exp : this.experienceList) {
+                exp.removeFromDb();
+            }
+        }
         return success;
     }
 }

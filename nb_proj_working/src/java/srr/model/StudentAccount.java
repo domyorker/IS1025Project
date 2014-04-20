@@ -1,16 +1,10 @@
 package srr.model;
 
 import java.math.BigInteger;
-import java.sql.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -77,9 +71,8 @@ public class StudentAccount {
         BigInteger tempID;
         String tempTitle;
         //ID required...;
-        HashMap tempList =new HashMap();
-      
-       
+        HashMap tempList = new HashMap();
+
         if (this.studentID == null) {
             return null;
         }
@@ -88,7 +81,7 @@ public class StudentAccount {
         try {
             db = new DbUtilities();
             rs = db.getResultSet(sql);
-            while (rs.next()) { 
+            while (rs.next()) {
                 tempID = BigInteger.valueOf(rs.getLong("resumeID"));
                 tempTitle = rs.getString("title");
 
@@ -124,9 +117,7 @@ public class StudentAccount {
         sql += " VALUES (NULL, '" + this.userName + "', '" + encodePassword(this.password) + "', '" + this.fName + "', '" + this.lName;
         sql += "', '" + this.email + "', '" + this.addressLine1 + "', '" + this.addressLine2 + "', " + this.stateID;
         sql += ", '" + this.city + "', " + this.ZIP + ", '" + this.phone + "', " + this.classLevelID + ")";
-        //now escape the insert
-        // sql = cleanMySqlInsert(sql); //believe to get errors when using this scape method jm
-        // System.out.println("The sql string: " + sql);***********************
+
         DbUtilities db = new DbUtilities();
         boolean success = false;
         try {
@@ -148,7 +139,6 @@ public class StudentAccount {
 
         if (!this.userName.isEmpty()) {
             String sql = "SELECT studentID FROM srr.student_account WHERE userName = '" + this.userName + "';";
-            System.out.println("The sql string: " + sql); //**************************
             this.db = new DbUtilities();
             ResultSet rs;
             try {
@@ -188,7 +178,7 @@ public class StudentAccount {
                 this.addressLine2 = rs.getString("addressLine1");
                 this.stateID = rs.getInt("stateID");
                 this.city = rs.getString("city");
-                this.ZIP = rs.getString("fName");
+                this.ZIP = rs.getString("ZIP");
                 this.classLevelID = rs.getInt("classLevelID");
             }
         } catch (SQLException ex) {
@@ -222,7 +212,7 @@ public class StudentAccount {
             studentJSON.put("EducationList", jsonEducationList); //add the education list
         } catch (JSONException ex) {
             //need to work on error logging (a consistent method): not priority
-            System.out.println("Error in constructor of StudentAccount: " + ex.getMessage());
+            System.out.println("Error in getStudentAccountAsJSON of StudentAccount: " + ex.getMessage());
         }
 
         return studentJSON;
@@ -338,6 +328,51 @@ public class StudentAccount {
 
     public int getClassLevelID() {
         return this.classLevelID;
+    }
+
+    /**
+     * A method to obtain the name of the state for this account
+     *
+     * @return The name of the State as a String
+     */
+    public String getStateName() {
+        String sql = "SELECT name FROM srr.state_lookup WHERE stateID=" + this.stateID;
+        ResultSet rs;
+        String name = "";
+        db = new DbUtilities();
+        try {
+            rs = db.getResultSet(sql);
+            if (rs.next()) {
+                name = rs.getString("name");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Error in getStateName in StudentAcccount: " + ex.getMessage());
+        }
+        return name;
+    }
+
+    /**
+     * A method to obtain the abbreviation of the State related to this account
+     *
+     * @return The abbreviation of the State as a String
+     */
+    public String getStateAbbreviation() {
+        String sql = "SELECT abbreviation FROM srr.state_lookup WHERE stateID=" + this.stateID;
+        ResultSet rs;
+        String abbr = "";
+        db = new DbUtilities();
+        try {
+            rs = db.getResultSet(sql);
+            if (rs.next()) {
+                abbr = rs.getString("abbreviation");
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error in getStateName in StudentAcccount: " + ex.getMessage());
+        } finally {
+            db.releaseConnection();
+        }
+        return abbr;
     }
 
 }
